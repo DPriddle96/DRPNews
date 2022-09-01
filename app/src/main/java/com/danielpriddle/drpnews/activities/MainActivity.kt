@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
     private fun populateTextViews() {
         //NEW WAY UPDATED 9/1 - Loops through Article map
         val textViews = binding.articleViewGroup.children.toList().filterIsInstance<TextView>()
-        articles.forEach { entry ->
-            val content = getContent(entry.value)
-            textViews[entry.key].text = content
+        articles.forEach { (key, value) ->
+            val content = getContent(value)
+            textViews[key].text = content
         }
 
         //OLD WAY - Loops through ViewGroup's children
@@ -94,19 +94,22 @@ class MainActivity : AppCompatActivity() {
     /**
      * getContent
      * Purpose: This function is used to retrieve content from the Article map to be displayed in the TextViews.
-     * It takes in an Int parameter 'key', which is the key from which to retrieve the Article value from.
-     * It parses out the properties from the retrieved Article, checks for null and empty property values,
-     * and concatenates them into a String variable 'content' and returns it.
+     * It takes in an Article parameter 'article' and it uses destructuring to get the properties
+     * from the Article. It checks for null and empty property values, and concatenates them into a
+     * String variable 'content' and returns it.
      * Parameters: key: integer value representing the key in the Article map
      * Returns: A concatenated string of Article content
      */
     private fun getContent(article: Article): String {
-        val title = article.title
-        val sourceName = article.source.name
-        val author = article.author
-        val url = article.url
-        val publishedAt = article.publishedAt
-        val description = article.description
+        val (source, author, title, description, url, _, publishedAt) = article
+        val sourceName = source.name
+
+        //val title = article.title
+        //val sourceName = article.source.name
+        //val author = article.author
+        //val url = article.url
+        //val publishedAt = article.publishedAt
+        //val description = article.description
 
         var content = "$sourceName \n$title \n"
 
