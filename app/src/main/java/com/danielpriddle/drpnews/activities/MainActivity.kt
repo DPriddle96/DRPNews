@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         //NEW WAY UPDATED 9/1 - Loops through Article map
         val textViews = binding.articleViewGroup.children.toList().filterIsInstance<TextView>()
         articles.forEach { entry ->
-            val content = getContent(entry.key)
+            val content = getContent(entry.value)
             textViews[entry.key].text = content
         }
 
@@ -100,13 +100,13 @@ class MainActivity : AppCompatActivity() {
      * Parameters: key: integer value representing the key in the Article map
      * Returns: A concatenated string of Article content
      */
-    private fun getContent(key: Int): String {
-        val title = articles[key]?.title
-        val sourceName = articles[key]?.source?.name
-        val author = articles[key]?.author
-        val url = articles[key]?.url
-        val publishedAt = articles[key]?.publishedAt
-        val description = articles[key]?.description
+    private fun getContent(article: Article): String {
+        val title = article.title
+        val sourceName = article.source.name
+        val author = article.author
+        val url = article.url
+        val publishedAt = article.publishedAt
+        val description = article.description
 
         var content = "$sourceName \n$title \n"
 
