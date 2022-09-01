@@ -13,14 +13,14 @@ class MainActivity : AppCompatActivity() {
 
     //Immutable map of Article objects.
     private var articles = mapOf(
-        1 to Article(
+        0 to Article(
             Source(name = "The Onion"),
             title = "Trump Claims Seized Classified Documents Had Been In His Family For Generations",
             url = "https://www.theonion.com/trump-claims-seized-classified-documents-had-been-in-hi-1849462609",
             description = "Stating he was “absolutely sickened” over the loss of “such precious heirlooms,” former President Donald Trump claimed Friday that the classified documents seized in an FBI raid had been in his family for generations.",
             publishedAt = "8/26/2022 12:50PM"
         ),
-        2 to Article(
+        1 to Article(
             Source(name = "BBC Sport"),
             title = "Belgian Grand Prix: No stopping 'phenomenal' Verstappen as second title approaches",
             author = "Andrew Benson",
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             url = "https://www.bbc.com/sport/formula1/62707533",
             publishedAt = "8/28/2022"
         ),
-        3 to Article(
+        2 to Article(
             Source(name = "BBC News"),
             title = "California to ban sales of petrol-only vehicles by 2035",
             author = "Annabelle Liang",
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             url = "https://www.bbc.com/news/business-62683260",
             publishedAt = "8/26/2022"
         ),
-        4 to Article(
+        3 to Article(
             Source(name = "BBC News"),
             title = "Jerome Powell: US stock markets down after interest rate warning",
             author = "Michelle Fleury & Alys Davies",
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             url = "https://www.bbc.com/news/business-62695937",
             publishedAt = "8/27/2022"
         ),
-        5 to Article(
+        4 to Article(
             Source(name = "The Onion"),
             title = "LeBron James Declares Re-Signing With Lakers Gives Him Best Chance To Miss Playoffs",
             url = "https://www.theonion.com/lebron-james-declares-re-signing-with-lakers-gives-him-1849461932",
@@ -67,22 +67,28 @@ class MainActivity : AppCompatActivity() {
     /**
      * populateTextViews
      * Purpose: This function is used to populate the 5 TextViews with content from the Article map.
-     * It gets the parent ViewGroup, loops through the ViewGroup's children (the 5 TextViews) and
+     * It gets the list of TextViews from the article ViewGroup, loops through the Article map and
      * populates each TextView's text with the Article content returned from the getContent()
-     * function. It then increments a counter used to iterate through the Article map.
+     * function.
      * Parameters: NONE
      * Returns: NONE
      */
     private fun populateTextViews() {
-        val articleViewGroup = binding.articleViewGroup
-        var count = 1
-        for (textView in articleViewGroup.children) {
-            if (textView is TextView) {
-                val content = getContent(count)
-                textView.text = content
-                count++
-            }
+        //NEW WAY UPDATED 9/1 - Loops through Article map
+        val textViews = binding.articleViewGroup.children.toList().filterIsInstance<TextView>()
+        articles.forEach { entry ->
+            val content = getContent(entry.key)
+            textViews[entry.key].text = content
         }
+
+        //OLD WAY - Loops through ViewGroup's children
+//        articleViewGroup.children.forEach { textView ->
+//            if (textView is TextView) {
+//                val content = getContent(count)
+//                textView.text = content
+//                count++
+//            }
+//        }
     }
 
     /**
