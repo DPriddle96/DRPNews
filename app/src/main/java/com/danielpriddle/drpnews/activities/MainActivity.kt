@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
      * It takes in an Article parameter 'article' and it uses destructuring to get the properties
      * from the Article. It checks for null and empty property values, and concatenates them into a
      * String variable 'content' and returns it.
-     * Parameters: key: integer value representing the key in the Article map
+     * Parameters: article: Article value to get the content from
      * Returns: A concatenated string of Article content
      */
     private fun getContent(article: Article): String {
