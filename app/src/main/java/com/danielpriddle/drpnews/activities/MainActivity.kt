@@ -70,25 +70,15 @@ class MainActivity : AppCompatActivity() {
      * It gets the list of TextViews from the article ViewGroup, loops through the Article map and
      * populates each TextView's text with the Article content returned from the getContent()
      * function.
-     * Parameters: NONE
-     * Returns: NONE
+     * @param: NONE
+     * @return: NONE
      */
     private fun populateTextViews() {
-        //NEW WAY UPDATED 9/1 - Loops through Article map
         val textViews = binding.articleViewGroup.children.toList().filterIsInstance<TextView>()
         articles.forEach { (key, value) ->
             val content = getContent(value)
             textViews[key].text = content
         }
-
-        //OLD WAY - Loops through ViewGroup's children
-//        articleViewGroup.children.forEach { textView ->
-//            if (textView is TextView) {
-//                val content = getContent(count)
-//                textView.text = content
-//                count++
-//            }
-//        }
     }
 
     /**
@@ -97,19 +87,12 @@ class MainActivity : AppCompatActivity() {
      * It takes in an Article parameter 'article' and it uses destructuring to get the properties
      * from the Article. It checks for null and empty property values, and concatenates them into a
      * String variable 'content' and returns it.
-     * Parameters: article: Article value to get the content from
-     * Returns: A concatenated string of Article content
+     * @param: article: Article value to get the content from
+     * @return: A concatenated string of Article content
      */
     private fun getContent(article: Article): String {
         val (source, author, title, description, url, _, publishedAt) = article
         val sourceName = source.name
-
-        //val title = article.title
-        //val sourceName = article.source.name
-        //val author = article.author
-        //val url = article.url
-        //val publishedAt = article.publishedAt
-        //val description = article.description
 
         var content = "$sourceName \n$title \n"
 
