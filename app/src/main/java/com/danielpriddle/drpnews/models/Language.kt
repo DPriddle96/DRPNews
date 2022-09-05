@@ -1,5 +1,11 @@
 package com.danielpriddle.drpnews.models
 
+/**
+ * Language
+ *
+ * This enum class defines the finite list of Source languages available to us from NewsAPI
+ * @author Dan Priddle
+ */
 enum class Language(val apiName: String) {
     AR("ar"),
     DE("de"),

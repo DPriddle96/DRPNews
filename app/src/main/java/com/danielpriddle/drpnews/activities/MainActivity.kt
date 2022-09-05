@@ -18,11 +18,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //call user-made function to populate the 5 TextViews
+        //get the articles from the InMemoryNewsService and filter null articles
         val articles = newsService.getArticles().filterNotNull()
+
+        //loop through the articles and add a custom ArticleView to the root view for each article
         articles.forEach { article ->
             val articleView = ArticleView(this)
             articleView.setArticle(article)
+            //NOTE: <merge> messes with orientation and adding parentTag didn't seem to work.
+            //Is there a better way that I am missing?
             articleView.orientation = LinearLayout.VERTICAL
             binding.articleViewGroup.addView(articleView)
         }

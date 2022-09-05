@@ -4,15 +4,21 @@ import com.danielpriddle.drpnews.interfaces.NewsService
 import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.models.Source
 
+/**
+ * InMemoryNewsService
+ *
+ * This service class implements the NewsService interface and helps keep data retrieval concerns
+ * separate from UI logic
+ * @see NewsService
+ * @author Dan Priddle
+ */
 class InMemoryNewsService : NewsService {
     /**
      * getArticles
-     * Purpose: This function is used to retrieve content from the Article map to be displayed in the TextViews.
-     * It takes in an Article parameter 'article' and it uses destructuring to get the properties
-     * from the Article. It checks for null and empty property values, and concatenates them into a
-     * String variable 'content' and returns it.
-     * @param: NONE
-     * @return: A concatenated string of Article content
+     *
+     * This function overrides the getArticles function defined in the NewsService interface by
+     * retrieving hardcoded Articles stored in memory.
+     * @return A nullable ArrayList of Article objects
      */
     override fun getArticles(): ArrayList<Article?> {
         return arrayListOf(

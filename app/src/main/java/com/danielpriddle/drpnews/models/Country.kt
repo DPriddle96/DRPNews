@@ -1,5 +1,11 @@
 package com.danielpriddle.drpnews.models
 
+/**
+ * Country
+ *
+ * This enum class defines the finite list of Source countries available to us from NewsAPI
+ * @author Dan Priddle
+ */
 enum class Country(val apiName: String) {
     AE("ae"),
     AR("ar"),
