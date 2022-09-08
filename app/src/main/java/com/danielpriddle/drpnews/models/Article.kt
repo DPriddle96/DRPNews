@@ -1,8 +1,10 @@
 package com.danielpriddle.drpnews.models
 
 /**
- * Data class for Article objects to be displayed
+ * Article
  *
+ * Data class for Article objects
+ * @author Dan Priddle
  */
 data class Article(
     val source: Source,
