@@ -24,6 +24,10 @@ class ArticleView @JvmOverloads constructor(
     //inflate the view
     private val binding = ArticleViewBinding.inflate(LayoutInflater.from(context), this)
 
+    init {
+        orientation = VERTICAL
+    }
+
     /**
      * setArticle
      *
