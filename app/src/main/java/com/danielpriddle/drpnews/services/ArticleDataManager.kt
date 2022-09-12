@@ -7,14 +7,26 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
+/**
+ * ArticleDataManager
+ *
+ * This class sets up a PreferenceManager for reading and writing Article data to SharedPreferences.
+ * Since complex data types cannot be stored in SharedPreferences, Gson was added to convert
+ * Article objects to JSON strings when writing, and from JSON strings to Article objects when
+ * reading.
+ *
+ * Credit goes to
+ * [Android – Save ArrayList to SharedPreferences with Kotlin](https://www.geeksforgeeks.org/android-save-arraylist-to-sharedpreferences-with-kotlin/)
+ * for inspiration.
+ * @author Dan Priddle
+ */
 class ArticleDataManager(context: Context) {
     private val gson = Gson()
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun saveArticles(articles: List<Article>) {
         val sharedPreferencesEditor = sharedPreferences.edit()
-        val articleJson = gson.toJson(articles)
-        sharedPreferencesEditor.putString("articles", articleJson)
+        sharedPreferencesEditor.putString("articles", gson.toJson(articles))
         sharedPreferencesEditor.apply()
     }
 

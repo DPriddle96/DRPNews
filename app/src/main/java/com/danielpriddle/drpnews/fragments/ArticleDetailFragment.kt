@@ -10,6 +10,14 @@ import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.views.ArticleView
 
+/**
+ * ArticleDetailFragment
+ *
+ * This Fragment displays detailed information about Articles abd is created when an Article is
+ * clicked in the RecyclerView displayed by the ArticleListFragment. It takes in an Article as an
+ * argument and displays a custom ArticleView.
+ * @author Dan Priddle
+ */
 class ArticleDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleDetailBinding
@@ -30,27 +38,11 @@ class ArticleDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
 
+        //Add a custom ArticleView to the view, displaying the details of the article passed in
         val articleView = ArticleView(container!!.context)
         articleView.setArticle(article)
-        //NOTE: <merge> messes with orientation and adding parentTag didn't seem to work.
-        //Is there a better way that I am missing?
-        //articleView.orientation = LinearLayout.VERTICAL
         binding.articleViewGroup.addView(articleView)
         return binding.root
     }
 
-    companion object {
-        fun newInstance(): ArticleDetailFragment = ArticleDetailFragment()
-    }
-
-//    companion object {
-//        private val ARG_LIST = "article"
-//        fun newInstance(article: Article): ArticleDetailFragment {
-//            val bundle = Bundle()
-//            bundle.putParcelable(ARG_LIST, article)
-//            val fragment = ArticleDetailFragment()
-//            fragment.arguments = bundle
-//            return fragment
-//        }
-//    }
 }

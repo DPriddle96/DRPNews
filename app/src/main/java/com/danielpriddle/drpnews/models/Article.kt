@@ -7,6 +7,9 @@ import kotlinx.parcelize.Parcelize
  * Article
  *
  * Data class for Article objects
+ *
+ * Update 9/10/2022: Added Parcelize plugin to make data class Parcelable for passing article data
+ * between activities/fragments.
  * @author Dan Priddle
  */
 

@@ -24,6 +24,7 @@ class ArticleView @JvmOverloads constructor(
     //inflate the view
     private val binding = ArticleViewBinding.inflate(LayoutInflater.from(context), this)
 
+    //on initialization, set the LinearLayout orientation to Vertical
     init {
         orientation = VERTICAL
     }

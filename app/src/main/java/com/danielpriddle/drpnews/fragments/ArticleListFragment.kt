@@ -13,16 +13,20 @@ import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.services.ArticleDataManager
 import com.danielpriddle.drpnews.adapters.ArticleListAdapter
 
+/**
+ * ArticleListFragment
+ *
+ * This Fragment displays a list of Articles in a RecyclerView. It reads the Article data from the
+ * ArticleDataManager and passes that on to the ArticleListAdapter to bind the data to the
+ * RecyclerView. It also sets up an interface for the MainActivity to implement to respond to
+ * Article clicks.
+ * @author Dan Priddle
+ */
 class ArticleListFragment : Fragment(), ArticleListAdapter.ArticleListClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var articleListRecyclerView: RecyclerView
     private lateinit var articleDataManager: ArticleDataManager
     private lateinit var binding: FragmentArticleListBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +41,8 @@ class ArticleListFragment : Fragment(), ArticleListAdapter.ArticleListClickListe
         super.onViewCreated(view, savedInstanceState)
 
         val articles = articleDataManager.readArticles()
-        articleListRecyclerView = binding.articleListRecyclerView
-        articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        articleListRecyclerView.adapter = ArticleListAdapter(articles, this)
+        binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.articleListRecyclerView.adapter = ArticleListAdapter(articles, this)
     }
 
     override fun onAttach(context: Context) {
@@ -53,10 +56,6 @@ class ArticleListFragment : Fragment(), ArticleListAdapter.ArticleListClickListe
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    companion object {
-        fun newInstance(): ArticleListFragment = ArticleListFragment()
     }
 
     interface OnFragmentInteractionListener {
