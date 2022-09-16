@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.views.ArticleView
@@ -27,7 +26,7 @@ class ArticleDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             val safeArgs = ArticleDetailFragmentArgs.fromBundle(it)
-            article = safeArgs.param1
+            article = safeArgs.article
         }
     }
 

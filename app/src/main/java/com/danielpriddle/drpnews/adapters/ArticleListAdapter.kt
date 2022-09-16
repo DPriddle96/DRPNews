@@ -1,7 +1,6 @@
 package com.danielpriddle.drpnews.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding
@@ -18,12 +17,8 @@ import com.danielpriddle.drpnews.views.ArticleListViewHolder
  */
 class ArticleListAdapter(
     private val articles: List<Article>,
-    private val clickListener: ArticleListClickListener,
+    private val clickListener: (Article) -> Unit,
 ) : RecyclerView.Adapter<ArticleListViewHolder>() {
-
-    interface ArticleListClickListener {
-        fun articleClicked(article: Article, view: View)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
         val binding =
@@ -37,8 +32,8 @@ class ArticleListAdapter(
         holder.articleSourceTextView.text = articles[position].source.name
 
         //set up a click listener!
-        holder.itemView.setOnClickListener { view ->
-            clickListener.articleClicked(articles[position], view)
+        holder.itemView.setOnClickListener {
+            clickListener(articles[position])
         }
     }
 

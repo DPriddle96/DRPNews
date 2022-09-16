@@ -6,10 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
-import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.services.ArticleDataManager
 import com.danielpriddle.drpnews.adapters.ArticleListAdapter
 
@@ -22,9 +21,8 @@ import com.danielpriddle.drpnews.adapters.ArticleListAdapter
  * Article clicks.
  * @author Dan Priddle
  */
-class ArticleListFragment : Fragment(), ArticleListAdapter.ArticleListClickListener {
+class ArticleListFragment : Fragment() {
 
-    private var listener: OnFragmentInteractionListener? = null
     private lateinit var articleDataManager: ArticleDataManager
     private lateinit var binding: FragmentArticleListBinding
 
@@ -42,27 +40,14 @@ class ArticleListFragment : Fragment(), ArticleListAdapter.ArticleListClickListe
 
         val articles = articleDataManager.readArticles()
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.articleListRecyclerView.adapter = ArticleListAdapter(articles, this)
+        binding.articleListRecyclerView.adapter = ArticleListAdapter(articles) { article ->
+            val action = ArticleListFragmentDirections.actionListToArticle(article)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-            articleDataManager = ArticleDataManager(context)
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        fun onArticleClicked(article: Article, view: View)
-    }
-
-    override fun articleClicked(article: Article, view: View) {
-        listener?.onArticleClicked(article, view)
+        articleDataManager = ArticleDataManager(context)
     }
 }
