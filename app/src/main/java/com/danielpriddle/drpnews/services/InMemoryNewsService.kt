@@ -59,7 +59,29 @@ class InMemoryNewsService : NewsService {
                 url = "https://www.theonion.com/lebron-james-declares-re-signing-with-lakers-gives-him-1849461932",
                 publishedAt = "8/26/2022"
             ),
-            null
+            null,
+            Article(
+                Source(name = "BBC Sport"),
+                title = "Italian Grand Prix: Charles Leclerc takes pole position for Ferrari",
+                author = "Andrew Benson",
+                description = "Ferrari's Charles Leclerc took pole position at the Italian Grand Prix ahead of Red Bull's Max Verstappen.",
+                url = "https://www.bbc.com/sport/formula1/62862718",
+                publishedAt = "9/11/2022 5:30AM"
+            ),
+            Article(
+                Source(name = "The Onion"),
+                title = "iPhone 14 Camera To Include Director For Highest-Quality Video Yet",
+                url = "https://www.theonion.com/iphone-14-camera-to-include-director-for-highest-qualit-1849509583",
+                description = "Boasting that the high-quality video could rival almost any professional film, Apple announced Thursday that the new iPhone 14 camera would come equipped with a Hollywood movie director for the best results yet.",
+                publishedAt = "9/8/2022 11:00AM"
+            ),
+            Article(
+                Source(name = "The Onion"),
+                title = "Report: Nothing Beats Seeing Yankees Lose At Home",
+                url = "https://www.theonion.com/report-nothing-beats-seeing-yankees-lose-at-home-1849414524",
+                description = "An exhaustive report drawing on data compiled over the past several decades and released Tuesday concluded that nothing beats seeing the New York Yankees lose at home.",
+                publishedAt = "8/16/2022 6:59AM"
+            ),
         )
     }
 }

@@ -4,13 +4,13 @@
 
     <TextView
         android:id="@+id/sourceNameTextView"
-        style="@style/article_source_name_text"
+        style="@style/article_detail_source_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/articleTitleTextView"
-        style="@style/article_title_text"
+        style="@style/article_detail_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -27,7 +27,9 @@
     <TextView
         android:id="@+id/articleDescriptionTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:paddingTop="16dp" />
 
     <TextView
         android:id="@+id/articleUrlTextView"

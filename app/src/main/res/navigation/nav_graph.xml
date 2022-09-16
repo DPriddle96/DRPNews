@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/articleListFragment">
+
+    <fragment
+        android:id="@+id/articleListFragment"
+        android:name="com.danielpriddle.drpnews.fragments.ArticleListFragment"
+        android:label="fragment_article_list"
+        tools:layout="@layout/fragment_article_list">
+        <action
+            android:id="@+id/actionListToArticle"
+            app:destination="@id/articleDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="com.danielpriddle.drpnews.fragments.ArticleDetailFragment"
+        android:label="fragment_article_detail"
+        tools:layout="@layout/fragment_article_detail">
+        <argument
+            android:name="param1"
+            app:argType="com.danielpriddle.drpnews.models.Article" />
+    </fragment>
+</navigation>
