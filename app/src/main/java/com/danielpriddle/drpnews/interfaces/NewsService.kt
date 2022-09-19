@@ -1,6 +1,7 @@
 package com.danielpriddle.drpnews.interfaces
 
 import com.danielpriddle.drpnews.models.Article
+import com.danielpriddle.drpnews.networking.APIResult
 
 /**
  * NewsService
@@ -11,5 +12,5 @@ import com.danielpriddle.drpnews.models.Article
  * @author Dan Priddle
  */
 interface NewsService {
-    fun getArticles(): ArrayList<Article?>
+    fun getTopHeadlines(onArticlesReceived: (APIResult<List<Article>>) -> Unit)
 }

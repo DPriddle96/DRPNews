@@ -4,9 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.ArticleViewBinding
 import com.danielpriddle.drpnews.models.Article
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * ArticleView
@@ -44,8 +48,11 @@ class ArticleView @JvmOverloads constructor(
         setArticleAuthor(article.author)
         setArticleDescription(article.description)
         setArticleUrl(article.url)
+        setArticleContent(article.content)
         setArticlePublishedAt(article.publishedAt)
+        setArticleImage(article.urlToImage)
     }
+
 
     /**
      * setSourceName
@@ -87,6 +94,15 @@ class ArticleView @JvmOverloads constructor(
         binding.articleAuthorTextView.visibility = if (author.isNullOrEmpty()) GONE else VISIBLE
     }
 
+    private fun setArticleImage(urlToImage: String?) {
+        if (!urlToImage.isNullOrEmpty()) {
+            Glide.with(this).load(urlToImage).into(binding.articleImageView)
+        } else {
+            binding.articleImageView.visibility = GONE
+        }
+
+    }
+
     /**
      * setArticleDescription
      *
@@ -99,6 +115,20 @@ class ArticleView @JvmOverloads constructor(
         binding.articleDescriptionTextView.text = description
         binding.articleDescriptionTextView.visibility =
             if (description.isNullOrEmpty()) GONE else VISIBLE
+    }
+
+    /**
+     * setArticleContent
+     *
+     * This function sets the text property of the articleContentTextView and hides the TextView
+     * if the passed in string is null or empty to make the layout cleaner.
+     * @param content The content property of the Article object passed into the setArticle function.
+     * @return NONE
+     */
+    private fun setArticleContent(content: String?) {
+        binding.articleContentTextView.text = content
+        binding.articleContentTextView.visibility =
+            if (content.isNullOrEmpty()) GONE else VISIBLE
     }
 
     /**

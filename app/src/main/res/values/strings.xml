@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DRPNews</string>
     <string name="article_by">By: %s</string>
+    <string name="article_image">article image</string>
 </resources>

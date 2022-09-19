@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.views
+package com.danielpriddle.drpnews.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding

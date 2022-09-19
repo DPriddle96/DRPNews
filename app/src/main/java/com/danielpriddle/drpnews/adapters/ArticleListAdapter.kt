@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding
 import com.danielpriddle.drpnews.models.Article
-import com.danielpriddle.drpnews.views.ArticleListViewHolder
 
 /**
  * ArticleDataManager
@@ -16,9 +15,10 @@ import com.danielpriddle.drpnews.views.ArticleListViewHolder
  * @author Dan Priddle
  */
 class ArticleListAdapter(
-    private val articles: List<Article>,
     private val clickListener: (Article) -> Unit,
 ) : RecyclerView.Adapter<ArticleListViewHolder>() {
+
+    private val articles: MutableList<Article> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
         val binding =
@@ -39,5 +39,11 @@ class ArticleListAdapter(
 
     override fun getItemCount(): Int {
         return articles.size
+    }
+
+    fun setArticleData(articles: List<Article>) {
+        this.articles.clear()
+        this.articles.addAll(articles)
+        notifyDataSetChanged()
     }
 }

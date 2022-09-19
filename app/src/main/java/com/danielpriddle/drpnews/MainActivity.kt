@@ -3,13 +3,16 @@ package com.danielpriddle.drpnews
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.danielpriddle.drpnews.databinding.ActivityMainBinding
-import com.danielpriddle.drpnews.services.ArticleDataManager
-import com.danielpriddle.drpnews.services.InMemoryNewsService
+import com.danielpriddle.drpnews.networking.buildApiService
+import com.danielpriddle.drpnews.services.APINewsService
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        val newsService by lazy { APINewsService(buildApiService()) }
+    }
+
     private lateinit var binding: ActivityMainBinding
-    private val newsService = InMemoryNewsService()
-    private lateinit var articleDataManager: ArticleDataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,15 +20,6 @@ class MainActivity : AppCompatActivity() {
         //binding setup and display the view
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //get the articles from the InMemoryNewsService and filter null articles
-        val articles = newsService.getArticles().filterNotNull()
-
-        //Initialize the ArticleDataManager and save the articles in SharedPreferences
-        articleDataManager = ArticleDataManager(this)
-        articleDataManager.saveArticles(articles)
-
     }
-
 
 }
