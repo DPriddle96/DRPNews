@@ -8,6 +8,7 @@ import com.danielpriddle.drpnews.services.APINewsService
 
 class MainActivity : AppCompatActivity() {
 
+    //create a companion object to create a static newsService instance
     companion object {
         val newsService by lazy { APINewsService(buildApiService()) }
     }

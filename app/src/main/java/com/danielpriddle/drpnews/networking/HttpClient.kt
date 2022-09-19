@@ -5,6 +5,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * Functions that help build the HTTP client that will be used to call NewsAPI endpoints.
+ * @author Dan Priddle
+ */
+
 const val NEWS_API_URL = "https://newsapi.org/"
 
 fun buildClient(): OkHttpClient =

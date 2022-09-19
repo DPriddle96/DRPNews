@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.MainActivity.Companion.newsService
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.adapters.ArticleListAdapter
-import com.danielpriddle.drpnews.models.Article
 import com.danielpriddle.drpnews.networking.Failure
 import com.danielpriddle.drpnews.networking.NetworkStatusChecker
 import com.danielpriddle.drpnews.networking.Success
@@ -31,9 +30,18 @@ class ArticleListFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleListBinding
 
-    private val adapter by lazy { ArticleListAdapter(::onArticleSelected) }
+    //need a global instance of this since data population is now decoupled.
+    private val adapter by lazy {
+        ArticleListAdapter { article ->
+            val action = ArticleListFragmentDirections.actionListToArticle(article)
+            findNavController().navigate(action)
+        }
+    }
+
+    //SwipeRefreshLayout instance to initialize later
     private lateinit var articleRefreshLayout: SwipeRefreshLayout
 
+    //NetworkStatusChecker instance
     private val networkStatusChecker by lazy {
         NetworkStatusChecker(activity?.getSystemService(ConnectivityManager::class.java))
     }
@@ -49,6 +57,11 @@ class ArticleListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /*
+           initialize the SwipeRefreshLayout and set up a listener that displays a refreshing spinner
+           while retrieving Article data from the API
+         */
         articleRefreshLayout = binding.articleRefreshLayout
         articleRefreshLayout.setOnRefreshListener {
             articleRefreshLayout.isRefreshing = true
@@ -56,15 +69,19 @@ class ArticleListFragment : Fragment() {
         }
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
+        //get initial article data from API
         getArticles()
 
     }
 
-    private fun onArticleSelected(article: Article) {
-        val action = ArticleListFragmentDirections.actionListToArticle(article)
-        findNavController().navigate(action)
-    }
-
+    /**
+     * getArticles
+     *
+     * If the device is connected to the internet, this function calls a NewsAPI endpoint to get the
+     * top stories and handles the callback when we get a response. If we successfully retrieve data,
+     * we send it to the adapter (and hide the refresh spinner if this function was called from the
+     * refreshListener).
+     */
     private fun getArticles() {
         networkStatusChecker.performIfConnectedToInternet {
             newsService.getTopHeadlines { result ->

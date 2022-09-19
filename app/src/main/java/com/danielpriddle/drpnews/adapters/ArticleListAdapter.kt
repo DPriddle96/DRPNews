@@ -18,6 +18,7 @@ class ArticleListAdapter(
     private val clickListener: (Article) -> Unit,
 ) : RecyclerView.Adapter<ArticleListViewHolder>() {
 
+    //update 9/19/2022: Move this outside of parameters and make it mutable to help with refresh
     private val articles: MutableList<Article> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
@@ -41,6 +42,16 @@ class ArticleListAdapter(
         return articles.size
     }
 
+
+    /**
+     * setArticleData
+     *
+     * This function takes in a list of Articles that have been retrieved by the API and populates
+     * the 'articles' mutableList. This helps to decouple data population from the initialization of
+     * the adapter.
+     * @param articles An Article list passed in after retrieving API data
+     * @return NONE
+     */
     fun setArticleData(articles: List<Article>) {
         this.articles.clear()
         this.articles.addAll(articles)

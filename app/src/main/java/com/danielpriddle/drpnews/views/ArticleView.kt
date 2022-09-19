@@ -8,9 +8,6 @@ import com.bumptech.glide.Glide
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.ArticleViewBinding
 import com.danielpriddle.drpnews.models.Article
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 /**
  * ArticleView
@@ -94,10 +91,19 @@ class ArticleView @JvmOverloads constructor(
         binding.articleAuthorTextView.visibility = if (author.isNullOrEmpty()) GONE else VISIBLE
     }
 
+    /**
+     * setArticleImage
+     *
+     * This function uses Glide to get the image from the passed in URL and display it in the
+     * articleImageView
+     * @param urlToImage The urlToImage property of the Article object passed into the setArticle function.
+     * @return NONE
+     */
     private fun setArticleImage(urlToImage: String?) {
         if (!urlToImage.isNullOrEmpty()) {
             Glide.with(this).load(urlToImage).into(binding.articleImageView)
         } else {
+            //need this, otherwise UI doesn't paint
             binding.articleImageView.visibility = GONE
         }
 
