@@ -1,12 +1,10 @@
 package com.danielpriddle.drpnews.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding
 import com.danielpriddle.drpnews.models.Article
-import com.danielpriddle.drpnews.views.ArticleListViewHolder
 
 /**
  * ArticleDataManager
@@ -17,13 +15,11 @@ import com.danielpriddle.drpnews.views.ArticleListViewHolder
  * @author Dan Priddle
  */
 class ArticleListAdapter(
-    private val articles: List<Article>,
-    private val clickListener: ArticleListClickListener,
+    private val clickListener: (Article) -> Unit,
 ) : RecyclerView.Adapter<ArticleListViewHolder>() {
 
-    interface ArticleListClickListener {
-        fun articleClicked(article: Article, view: View)
-    }
+    //update 9/19/2022: Move this outside of parameters and make it mutable to help with refresh
+    private val articles: MutableList<Article> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
         val binding =
@@ -37,12 +33,28 @@ class ArticleListAdapter(
         holder.articleSourceTextView.text = articles[position].source.name
 
         //set up a click listener!
-        holder.itemView.setOnClickListener { view ->
-            clickListener.articleClicked(articles[position], view)
+        holder.itemView.setOnClickListener {
+            clickListener(articles[position])
         }
     }
 
     override fun getItemCount(): Int {
         return articles.size
+    }
+
+
+    /**
+     * setArticleData
+     *
+     * This function takes in a list of Articles that have been retrieved by the API and populates
+     * the 'articles' mutableList. This helps to decouple data population from the initialization of
+     * the adapter.
+     * @param articles An Article list passed in after retrieving API data
+     * @return NONE
+     */
+    fun setArticleData(articles: List<Article>) {
+        this.articles.clear()
+        this.articles.addAll(articles)
+        notifyDataSetChanged()
     }
 }
