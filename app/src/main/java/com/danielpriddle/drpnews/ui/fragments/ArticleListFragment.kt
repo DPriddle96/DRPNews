@@ -68,7 +68,7 @@ class ArticleListFragment : Fragment() {
         }
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
-        //get initial article data from API
+        //listen for articles
         articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
             adapter.setArticleData(articles)
             if (articles.isNotEmpty()) {
@@ -80,12 +80,14 @@ class ArticleListFragment : Fragment() {
 
         }
 
+        //listen for errors
         articleViewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 activity?.toast(error)
             }
         }
 
+        //listen for loading state
         articleViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             if (isLoading) {
                 binding.loadingView.root.visibility = View.VISIBLE
@@ -96,32 +98,5 @@ class ArticleListFragment : Fragment() {
 
 
     }
-
-    /**
-     * getArticles
-     *
-     * If the device is connected to the internet, this function calls a NewsAPI endpoint to get the
-     * top stories and handles the callback when we get a response. If we successfully retrieve data,
-     * we send it to the adapter (and hide the refresh spinner if this function was called from the
-     * refreshListener).
-     */
-//    private fun getArticles() {
-//        networkStatusChecker.performIfConnectedToInternet {
-//            newsService.getTopHeadlines { result ->
-//                when (result) {
-//                    is Success -> {
-//                        adapter.setArticleData(result.data)
-//                        if (articleRefreshLayout.isRefreshing) {
-//                            articleRefreshLayout.isRefreshing = false
-//                            activity?.toast("Got some breaking news for ya!")
-//                        }
-//                    }
-//                    is Failure -> {
-//                        result.error?.message?.let { activity?.toast(it) }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
 }

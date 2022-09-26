@@ -4,6 +4,7 @@ import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.models.NewsAPIErrorResponse
 import com.danielpriddle.drpnews.data.networking.*
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
+import com.danielpriddle.drpnews.utils.handleAPIError
 import com.google.gson.Gson
 
 /**
@@ -18,23 +19,16 @@ class APINewsService(
     private val api: NewsAPI,
     private val networkStatusChecker: NetworkStatusChecker,
 ) {
-    private val gson = Gson()
     suspend fun getTopHeadlines(): APIResult<List<Article>> {
-        if (networkStatusChecker.hasInternetConnection) {
+        return if (networkStatusChecker.hasInternetConnection) {
             val response = api.getTopHeadlines(country = "us")
-            return if (response.isSuccessful) {
+            if (response.isSuccessful) {
                 Success(response.body()!!.articles)
             } else {
-                if (response.code() == 404) {
-                    Failure("We could not find the news you're looking for!")
-                } else {
-                    val errorResponse = gson.fromJson(response.errorBody()!!.string(),
-                        NewsAPIErrorResponse::class.java)
-                    Failure(errorResponse.message)
-                }
+                handleAPIError(response)
             }
         } else {
-            return Failure("You are not connected to the Internet! Please check your connection and try again!")
+            Failure("You are not connected to the Internet! Please check your connection and try again!")
         }
     }
 }
