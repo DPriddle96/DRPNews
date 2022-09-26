@@ -1,8 +1,8 @@
-package com.danielpriddle.drpnews.services
+package com.danielpriddle.drpnews.data.services
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.danielpriddle.drpnews.models.Article
+import com.danielpriddle.drpnews.data.models.Article
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

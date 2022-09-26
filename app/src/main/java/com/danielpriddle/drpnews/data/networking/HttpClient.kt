@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.networking
+package com.danielpriddle.drpnews.data.networking
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

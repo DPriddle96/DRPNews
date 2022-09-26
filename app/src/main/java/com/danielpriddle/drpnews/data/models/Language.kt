@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.models
+package com.danielpriddle.drpnews.data.models
 
 /**
  * Language

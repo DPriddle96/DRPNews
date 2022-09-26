@@ -9,11 +9,14 @@
         <entry key="app/src/main/res/layout-land/article_view.xml" value="0.17239858906525574" />
         <entry key="app/src/main/res/layout-land/fragment_article_detail.xml" value="0.17239858906525574" />
         <entry key="app/src/main/res/layout-land/fragment_article_list.xml" value="0.17239858906525574" />
+        <entry key="app/src/main/res/layout-land/loading_view.xml" value="0.17239858906525574" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/article_list_view_holder.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/article_view.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/fragment_article_detail.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/fragment_article_list.xml" value="0.18958333333333333" />
+        <entry key="app/src/main/res/layout/loading_view.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/loading_view_constraint.xml" value="0.20260416666666667" />
       </map>
     </option>
   </component>

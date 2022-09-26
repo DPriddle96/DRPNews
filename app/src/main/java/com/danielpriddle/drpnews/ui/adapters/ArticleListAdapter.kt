@@ -1,10 +1,10 @@
-package com.danielpriddle.drpnews.adapters
+package com.danielpriddle.drpnews.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding
-import com.danielpriddle.drpnews.models.Article
+import com.danielpriddle.drpnews.data.models.Article
 
 /**
  * ArticleDataManager

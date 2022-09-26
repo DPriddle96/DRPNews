@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.fragments
+package com.danielpriddle.drpnews.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
-import com.danielpriddle.drpnews.models.Article
-import com.danielpriddle.drpnews.views.ArticleView
+import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.ui.views.ArticleView
 
 /**
  * ArticleDetailFragment

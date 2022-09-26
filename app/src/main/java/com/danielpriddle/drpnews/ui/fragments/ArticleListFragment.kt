@@ -1,21 +1,20 @@
-package com.danielpriddle.drpnews.fragments
+package com.danielpriddle.drpnews.ui.fragments
 
-import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.MainActivity.Companion.newsService
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
-import com.danielpriddle.drpnews.adapters.ArticleListAdapter
-import com.danielpriddle.drpnews.networking.Failure
-import com.danielpriddle.drpnews.networking.NetworkStatusChecker
-import com.danielpriddle.drpnews.networking.Success
+import com.danielpriddle.drpnews.data.repository.ArticleRepository
+import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
 import com.danielpriddle.drpnews.utils.toast
+import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 
 /**
  * ArticleListFragment
@@ -30,6 +29,10 @@ class ArticleListFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleListBinding
 
+    private val articleViewModel: ArticleListViewModel by viewModels {
+        ArticleListViewModel.Factory(ArticleRepository(newsService))
+    }
+
     //need a global instance of this since data population is now decoupled.
     private val adapter by lazy {
         ArticleListAdapter { article ->
@@ -40,11 +43,6 @@ class ArticleListFragment : Fragment() {
 
     //SwipeRefreshLayout instance to initialize later
     private lateinit var articleRefreshLayout: SwipeRefreshLayout
-
-    //NetworkStatusChecker instance
-    private val networkStatusChecker by lazy {
-        NetworkStatusChecker(activity?.getSystemService(ConnectivityManager::class.java))
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,12 +63,36 @@ class ArticleListFragment : Fragment() {
         articleRefreshLayout = binding.articleRefreshLayout
         articleRefreshLayout.setOnRefreshListener {
             articleRefreshLayout.isRefreshing = true
-            getArticles()
+            articleViewModel.getArticles()
         }
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
         //get initial article data from API
-        getArticles()
+        articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
+            adapter.setArticleData(articles)
+            if (articles.isNotEmpty()) {
+                if (articleRefreshLayout.isRefreshing) {
+                    articleRefreshLayout.isRefreshing = false
+                    activity?.toast("Got some breaking news for ya!")
+                }
+            }
+
+        }
+
+        articleViewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                activity?.toast(error)
+            }
+        }
+
+        articleViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                binding.loadingView.root.visibility = View.VISIBLE
+            } else {
+                binding.loadingView.root.visibility = View.GONE
+            }
+        }
+
 
     }
 
@@ -82,23 +104,23 @@ class ArticleListFragment : Fragment() {
      * we send it to the adapter (and hide the refresh spinner if this function was called from the
      * refreshListener).
      */
-    private fun getArticles() {
-        networkStatusChecker.performIfConnectedToInternet {
-            newsService.getTopHeadlines { result ->
-                when (result) {
-                    is Success -> {
-                        adapter.setArticleData(result.data)
-                        if (articleRefreshLayout.isRefreshing) {
-                            articleRefreshLayout.isRefreshing = false
-                            activity?.toast("Got some breaking news for ya!")
-                        }
-                    }
-                    is Failure -> {
-                        result.error?.message?.let { activity?.toast(it) }
-                    }
-                }
-            }
-        }
-    }
+//    private fun getArticles() {
+//        networkStatusChecker.performIfConnectedToInternet {
+//            newsService.getTopHeadlines { result ->
+//                when (result) {
+//                    is Success -> {
+//                        adapter.setArticleData(result.data)
+//                        if (articleRefreshLayout.isRefreshing) {
+//                            articleRefreshLayout.isRefreshing = false
+//                            activity?.toast("Got some breaking news for ya!")
+//                        }
+//                    }
+//                    is Failure -> {
+//                        result.error?.message?.let { activity?.toast(it) }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

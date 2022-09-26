@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/articleListFragment"
-        android:name="com.danielpriddle.drpnews.fragments.ArticleListFragment"
+        android:name="com.danielpriddle.drpnews.ui.fragments.ArticleListFragment"
         android:label="fragment_article_list"
         tools:layout="@layout/fragment_article_list">
         <action
@@ -16,11 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/articleDetailFragment"
-        android:name="com.danielpriddle.drpnews.fragments.ArticleDetailFragment"
+        android:name="com.danielpriddle.drpnews.ui.fragments.ArticleDetailFragment"
         android:label="fragment_article_detail"
         tools:layout="@layout/fragment_article_detail">
         <argument
             android:name="article"
-            app:argType="com.danielpriddle.drpnews.models.Article" />
+            app:argType="com.danielpriddle.drpnews.data.models.Article" />
     </fragment>
 </navigation>
