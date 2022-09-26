@@ -19,6 +19,11 @@ class MainActivity : AppCompatActivity() {
     //create a companion object to create a static newsService instance
     companion object {
         private var activity: MainActivity? = null
+
+        /*
+            9/26/2022 update: add a NetworkStatusChecker instance to the APINewsService constructor.
+            This way, the service can make connection checks instead of the activity or fragment.
+         */
         val newsService by lazy {
             APINewsService(buildApiService(),
                 NetworkStatusChecker(activity?.getSystemService(ConnectivityManager::class.java)))

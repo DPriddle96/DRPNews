@@ -19,10 +19,11 @@ import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 /**
  * ArticleListFragment
  *
- * This Fragment displays a list of Articles in a RecyclerView. It calls the NewsAPI to retrieve
- * Article data and passes that on to the ArticleListAdapter to bind the data to the
- * RecyclerView. It also contains a SwipeRefreshLayout that fetches updated data when the user
- * swipes down to refresh.
+ * This fragment displays a list of Articles in a RecyclerView. It contains an ArticleListViewModel
+ * that handles the retrieving of Article data and responds to changes to exposed ViewModel
+ * properties. It observes Article data and passes that on to the ArticleListAdapter to bind the
+ * data to the RecyclerView. It also contains a SwipeRefreshLayout that fetches updated data when
+ * the user swipes down to refresh.
  * @author Dan Priddle
  */
 class ArticleListFragment : Fragment() {

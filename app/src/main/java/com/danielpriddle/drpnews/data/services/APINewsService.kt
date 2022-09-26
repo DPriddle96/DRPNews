@@ -9,8 +9,9 @@ import com.google.gson.Gson
 /**
  * APINewsService
  *
- * This service class implements the NewsService interface and helps keep data retrieval concerns
- * separate from UI logic
+ * This service class keeps data retrieval from the API separate from the UI logic and provides a
+ * service that the Article repository can consume to store data. It also enhances error handling
+ * by handling network connection issues and client side errors.
  * @author Dan Priddle
  */
 class APINewsService(
