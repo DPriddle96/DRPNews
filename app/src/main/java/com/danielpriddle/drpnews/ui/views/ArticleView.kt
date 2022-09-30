@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.views
+package com.danielpriddle.drpnews.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.ArticleViewBinding
-import com.danielpriddle.drpnews.models.Article
+import com.danielpriddle.drpnews.data.models.Article
 
 /**
  * ArticleView

@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.networking
+package com.danielpriddle.drpnews.data.networking
 
 /**
  * Error handling utility classes based on
@@ -6,4 +6,4 @@ package com.danielpriddle.drpnews.networking
  */
 sealed class APIResult<out T : Any>
 data class Success<out T : Any>(val data: T) : APIResult<T>()
-data class Failure(val error: Throwable?) : APIResult<Nothing>()
+data class Failure(val error: String) : APIResult<Nothing>()

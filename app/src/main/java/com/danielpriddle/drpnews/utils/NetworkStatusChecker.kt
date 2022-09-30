@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.networking
+package com.danielpriddle.drpnews.utils
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -10,13 +10,9 @@ import android.net.NetworkCapabilities
  * to check if a client device is connected to the internet before performing HTTP requests.
  */
 class NetworkStatusChecker(private val connectivityManager: ConnectivityManager?) {
-    inline fun performIfConnectedToInternet(action: () -> Unit) {
-        if (hasInternetConnection()) {
-            action()
-        }
-    }
+    val hasInternetConnection = hasInternetConnection()
 
-    fun hasInternetConnection(): Boolean {
+    private fun hasInternetConnection(): Boolean {
         val network = connectivityManager?.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
 
