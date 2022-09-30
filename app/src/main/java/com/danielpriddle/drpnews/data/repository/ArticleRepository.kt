@@ -21,7 +21,7 @@ class ArticleRepository(private val newsService: APINewsService) {
                 Pair(result.data, null)
             }
             is Failure -> {
-                Pair(listOf(), result.error)
+                Pair(emptyList(), result.error)
             }
         }
     }

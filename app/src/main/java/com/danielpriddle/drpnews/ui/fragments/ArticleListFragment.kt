@@ -10,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.MainActivity.Companion.newsService
+import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
+import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
 import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 
@@ -68,35 +70,29 @@ class ArticleListFragment : Fragment() {
         }
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
-        //listen for articles
-        articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
-            adapter.setArticleData(articles)
-            if (articles.isNotEmpty()) {
-                if (articleRefreshLayout.isRefreshing) {
-                    articleRefreshLayout.isRefreshing = false
-                    activity?.toast("Got some breaking news for ya!")
+
+        articleViewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is State.Loading -> binding.loadingView.root.visibility = View.VISIBLE
+                is State.Ready -> handleArticles(state.articles)
+                is State.Error -> {
+                    binding.loadingView.root.visibility = View.GONE
+                    activity?.toast(state.error)
                 }
             }
-
         }
 
-        //listen for errors
-        articleViewModel.error.observe(viewLifecycleOwner) { error ->
-            if (error != null) {
-                activity?.toast(error)
+    }
+
+    private fun handleArticles(articles: List<Article>) {
+        adapter.setArticleData(articles)
+        binding.loadingView.root.visibility = View.GONE
+        if (articles.isNotEmpty()) {
+            if (articleRefreshLayout.isRefreshing) {
+                articleRefreshLayout.isRefreshing = false
+                activity?.toast("Got some breaking news for ya!")
             }
         }
-
-        //listen for loading state
-        articleViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) {
-                binding.loadingView.root.visibility = View.VISIBLE
-            } else {
-                binding.loadingView.root.visibility = View.GONE
-            }
-        }
-
-
     }
 
 }

@@ -3,6 +3,7 @@ package com.danielpriddle.drpnews.viewmodels
 import androidx.lifecycle.*
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
+import com.danielpriddle.drpnews.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,23 +28,13 @@ class ArticleListViewModel(private val articleRepository: ArticleRepository) : V
         }
     }
 
-    //Articles state
-    private val _articles = MutableLiveData<List<Article>>()
-    val articles: LiveData<List<Article>> = _articles
-
-    //Error state
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
-
-    //Loading State
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _state = MutableLiveData<State>()
+    val state: LiveData<State> = _state
 
     init {
         //set the loading state on init and start getting data
-        _isLoading.value = true
+        _state.value = State.Loading
         getArticles()
-
     }
 
     fun getArticles() {
@@ -52,15 +43,9 @@ class ArticleListViewModel(private val articleRepository: ArticleRepository) : V
             val articles = articleRepository.getArticles().first
             val error = articleRepository.getArticles().second
             if (error != null) {
-                _error.postValue(error)
+                _state.postValue(State.Error(error))
             }
-            _articles.postValue(articles)
-
-            //go back to the main thread and set loading state to false now that we're done
-            withContext(Dispatchers.Main) {
-                _isLoading.value = false
-            }
-
+            _state.postValue(State.Ready(articles))
         }
     }
 }
