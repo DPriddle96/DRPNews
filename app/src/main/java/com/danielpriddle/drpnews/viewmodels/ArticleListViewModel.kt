@@ -18,13 +18,13 @@ import kotlinx.coroutines.withContext
  * @author Dan Priddle
  */
 
-class ArticleListViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
+class ArticleListViewModel() : ViewModel() {
 
-    class Factory(
-        private val articleRepository: ArticleRepository,
-    ) : ViewModelProvider.Factory {
+    private val articleRepository = ArticleRepository()
+
+    class Factory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ArticleListViewModel(articleRepository) as T
+            return ArticleListViewModel() as T
         }
     }
 

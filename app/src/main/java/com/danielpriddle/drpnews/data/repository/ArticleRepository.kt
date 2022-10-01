@@ -1,9 +1,9 @@
 package com.danielpriddle.drpnews.data.repository
 
+import com.danielpriddle.drpnews.MainActivity.Companion.newsService
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.networking.Failure
 import com.danielpriddle.drpnews.data.networking.Success
-import com.danielpriddle.drpnews.data.services.APINewsService
 
 /**
  * ArticleRepository
@@ -14,7 +14,7 @@ import com.danielpriddle.drpnews.data.services.APINewsService
  * @author Dan Priddle
  */
 
-class ArticleRepository(private val newsService: APINewsService) {
+class ArticleRepository {
     suspend fun getArticles(): Pair<List<Article>, String?> {
         return when (val result = newsService.getTopHeadlines()) {
             is Success -> {

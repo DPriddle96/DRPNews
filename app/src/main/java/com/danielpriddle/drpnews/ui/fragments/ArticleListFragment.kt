@@ -9,10 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.danielpriddle.drpnews.MainActivity.Companion.newsService
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
-import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
 import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
@@ -33,7 +31,7 @@ class ArticleListFragment : Fragment() {
     private lateinit var binding: FragmentArticleListBinding
 
     private val articleViewModel: ArticleListViewModel by viewModels {
-        ArticleListViewModel.Factory(ArticleRepository(newsService))
+        ArticleListViewModel.Factory()
     }
 
     //need a global instance of this since data population is now decoupled.

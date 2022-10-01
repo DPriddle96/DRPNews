@@ -1,15 +1,22 @@
 package com.danielpriddle.drpnews.ui.fragments
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.work.Constraints
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bumptech.glide.Glide
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.worker.SepiaFilterWorker
+import kotlinx.coroutines.*
 
 /**
  * ArticleDetailFragment
@@ -104,7 +111,37 @@ class ArticleDetailFragment : Fragment() {
      */
     private fun setArticleImage(urlToImage: String?) {
         if (!urlToImage.isNullOrEmpty()) {
-            Glide.with(this).load(urlToImage).into(binding.articleImageView)
+            CoroutineScope(Dispatchers.IO).launch {
+                val file = Glide.with(requireContext()).asFile().load(urlToImage).submit().get()
+                val imagePath = file.path
+                val constraints = Constraints.Builder()
+                    .setRequiresCharging(true)
+                    .setRequiresBatteryNotLow(true)
+                    .setRequiresStorageNotLow(true)
+                    .build()
+
+                val sepiaFilterWorker = OneTimeWorkRequestBuilder<SepiaFilterWorker>()
+                    .setInputData(workDataOf("image_path" to imagePath))
+                    .setConstraints(constraints)
+                    .build()
+
+                val workManager = WorkManager.getInstance(requireContext())
+                workManager.enqueue(sepiaFilterWorker)
+
+                launch(Dispatchers.Main) {
+                    workManager.getWorkInfoByIdLiveData(sepiaFilterWorker.id)
+                        .observe(viewLifecycleOwner) { info ->
+                            if (info.state.isFinished) {
+                                val imagePath = info.outputData.getString("image_path")
+                                if (!imagePath.isNullOrEmpty()) {
+                                    val bitmap = BitmapFactory.decodeFile(imagePath)
+                                    binding.articleImageView.setImageBitmap(bitmap)
+                                }
+                            }
+                        }
+                }
+            }
+            //Glide.with(this).load(urlToImage).into(binding.articleImageView)
         } else {
             //need this, otherwise UI doesn't paint
             binding.articleImageView.visibility = LinearLayout.GONE
@@ -167,6 +204,5 @@ class ArticleDetailFragment : Fragment() {
         binding.articlePublishedAtTextView.visibility =
             if (publishedAt.isEmpty()) LinearLayout.GONE else LinearLayout.VISIBLE
     }
-
 
 }

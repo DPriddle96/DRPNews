@@ -1,7 +1,5 @@
 package com.danielpriddle.drpnews
 
-import android.app.Activity
-import android.content.Context
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
