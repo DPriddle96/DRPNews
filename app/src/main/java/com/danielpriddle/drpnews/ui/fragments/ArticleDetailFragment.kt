@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.work.Constraints
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.bumptech.glide.Glide
+import androidx.work.*
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.worker.FileClearWorker
+import com.danielpriddle.drpnews.worker.GlideWorker
 import com.danielpriddle.drpnews.worker.SepiaFilterWorker
-import kotlinx.coroutines.*
 
 /**
  * ArticleDetailFragment
@@ -104,43 +101,48 @@ class ArticleDetailFragment : Fragment() {
     /**
      * setArticleImage
      *
-     * This function uses Glide to get the image from the passed in URL and display it in the
+     * This function uses workers to get the image from the passed in URL and display it in the
      * articleImageView
      * @param urlToImage The urlToImage property of the Article object passed into the setArticle function.
      * @return NONE
      */
     private fun setArticleImage(urlToImage: String?) {
         if (!urlToImage.isNullOrEmpty()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val file = Glide.with(requireContext()).asFile().load(urlToImage).submit().get()
-                val imagePath = file.path
-                val constraints = Constraints.Builder()
-                    .setRequiresCharging(true)
-                    .setRequiresBatteryNotLow(true)
-                    .setRequiresStorageNotLow(true)
-                    .build()
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .setRequiresStorageNotLow(true)
+                .build()
 
-                val sepiaFilterWorker = OneTimeWorkRequestBuilder<SepiaFilterWorker>()
-                    .setInputData(workDataOf("image_path" to imagePath))
-                    .setConstraints(constraints)
-                    .build()
+            val glideWorker = OneTimeWorkRequestBuilder<GlideWorker>()
+                .setInputData(workDataOf("image_url" to urlToImage))
+                .setConstraints(constraints)
+                .build()
 
-                val workManager = WorkManager.getInstance(requireContext())
-                workManager.enqueue(sepiaFilterWorker)
+            val sepiaFilterWorker = OneTimeWorkRequestBuilder<SepiaFilterWorker>()
+                .setConstraints(constraints)
+                .build()
 
-                launch(Dispatchers.Main) {
-                    workManager.getWorkInfoByIdLiveData(sepiaFilterWorker.id)
-                        .observe(viewLifecycleOwner) { info ->
-                            if (info.state.isFinished) {
-                                val imagePath = info.outputData.getString("image_path")
-                                if (!imagePath.isNullOrEmpty()) {
-                                    val bitmap = BitmapFactory.decodeFile(imagePath)
-                                    binding.articleImageView.setImageBitmap(bitmap)
-                                }
-                            }
+            val fileClearWorker = OneTimeWorkRequestBuilder<FileClearWorker>()
+                .setConstraints(constraints)
+                .build()
+
+            val workManager = WorkManager.getInstance(requireContext())
+            workManager.beginWith(fileClearWorker)
+                .then(glideWorker)
+                .then(sepiaFilterWorker)
+                .enqueue()
+
+            workManager.getWorkInfoByIdLiveData(sepiaFilterWorker.id)
+                .observe(viewLifecycleOwner) { info ->
+                    if (info.state.isFinished) {
+                        val path = info.outputData.getString("image_path")
+                        if (!path.isNullOrEmpty()) {
+                            val bitmap = BitmapFactory.decodeFile(path)
+                            binding.articleImageView.setImageBitmap(bitmap)
                         }
+                    }
                 }
-            }
             //Glide.with(this).load(urlToImage).into(binding.articleImageView)
         } else {
             //need this, otherwise UI doesn't paint

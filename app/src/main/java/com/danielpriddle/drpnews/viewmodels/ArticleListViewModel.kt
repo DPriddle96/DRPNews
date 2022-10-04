@@ -1,12 +1,12 @@
 package com.danielpriddle.drpnews.viewmodels
 
 import androidx.lifecycle.*
-import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.data.networking.Failure
+import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * ArticleListViewModel
@@ -18,13 +18,11 @@ import kotlinx.coroutines.withContext
  * @author Dan Priddle
  */
 
-class ArticleListViewModel() : ViewModel() {
+class ArticleListViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
 
-    private val articleRepository = ArticleRepository()
-
-    class Factory : ViewModelProvider.Factory {
+    class Factory(private val articleRepository: ArticleRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ArticleListViewModel() as T
+            return ArticleListViewModel(articleRepository) as T
         }
     }
 
@@ -40,12 +38,15 @@ class ArticleListViewModel() : ViewModel() {
     fun getArticles() {
         viewModelScope.launch(Dispatchers.IO) {
             //ArticleRepository returns a Pair, a list of Articles, and an error string if an error occurred.
-            val articles = articleRepository.getArticles().first
-            val error = articleRepository.getArticles().second
-            if (error != null) {
-                _state.postValue(State.Error(error))
+            //val result = articleRepository.getArticles()
+            when (val result = articleRepository.getArticles()) {
+                is Success -> {
+                    _state.postValue(State.Ready(result.data))
+                }
+                is Failure -> {
+                    _state.postValue(State.Error(result.error))
+                }
             }
-            _state.postValue(State.Ready(articles))
         }
     }
 }
