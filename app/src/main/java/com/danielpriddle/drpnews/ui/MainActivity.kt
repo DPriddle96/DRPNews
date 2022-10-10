@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews
+package com.danielpriddle.drpnews.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

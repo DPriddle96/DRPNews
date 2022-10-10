@@ -1,11 +1,14 @@
 package com.danielpriddle.drpnews.viewmodels
 
 import androidx.lifecycle.*
+import com.danielpriddle.drpnews.data.database.entities.relations.ArticleAndSource
 import com.danielpriddle.drpnews.data.networking.Failure
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.State
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 /**
@@ -36,17 +39,20 @@ class ArticleListViewModel(private val articleRepository: ArticleRepository) : V
     }
 
     fun getArticles() {
-        viewModelScope.launch(Dispatchers.IO) {
-            //ArticleRepository returns a Pair, a list of Articles, and an error string if an error occurred.
-            //val result = articleRepository.getArticles()
+        viewModelScope.launch(IO) {
             when (val result = articleRepository.getArticles()) {
-                is Success -> {
-                    _state.postValue(State.Ready(result.data))
-                }
-                is Failure -> {
-                    _state.postValue(State.Error(result.error))
-                }
+                is Success -> _state.postValue(State.Ready(result.data))
+                is Failure -> _state.postValue(State.Error(result.error))
             }
+        }
+
+    }
+
+    fun searchArticles(searchString: String) {
+        viewModelScope.launch(IO) {
+            val filteredArticles = articleRepository.searchArticles("%$searchString%")
+                .map { articleAndSource -> ArticleAndSource.toModel(articleAndSource) }
+            _state.postValue(State.Ready(filteredArticles))
         }
     }
 }

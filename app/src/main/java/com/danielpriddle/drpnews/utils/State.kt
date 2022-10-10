@@ -1,5 +1,6 @@
 package com.danielpriddle.drpnews.utils
 
+import com.danielpriddle.drpnews.data.database.entities.relations.ArticleAndSource
 import com.danielpriddle.drpnews.data.models.Article
 
 sealed class State {
