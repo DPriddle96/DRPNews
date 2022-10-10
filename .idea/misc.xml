@@ -17,6 +17,9 @@
         <entry key="app/src/main/res/layout/fragment_article_list.xml" value="0.18958333333333333" />
         <entry key="app/src/main/res/layout/loading_view.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/loading_view_constraint.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/menu.xml" value="0.23854166666666668" />
+        <entry key="app/src/main/res/layout/switch_item.xml" value="0.265625" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.23958333333333334" />
       </map>
     </option>
   </component>

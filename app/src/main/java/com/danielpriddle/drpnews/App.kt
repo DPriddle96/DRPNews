@@ -3,6 +3,7 @@ package com.danielpriddle.drpnews
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import androidx.datastore.preferences.preferencesDataStore
 import com.danielpriddle.drpnews.data.database.NewsDatabase
 import com.danielpriddle.drpnews.data.networking.buildApiService
 import com.danielpriddle.drpnews.data.repository.ArticleRepository

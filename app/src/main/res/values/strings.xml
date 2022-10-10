@@ -3,4 +3,5 @@
     <string name="article_by">By: %s</string>
     <string name="article_image">article image</string>
     <string name="loading_text">Retrieving Your Latest News…</string>
+    <string name="download_only_over_wifi">Download Only Over WiFi</string>
 </resources>

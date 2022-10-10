@@ -17,8 +17,10 @@ import java.util.*
  */
 
 @Parcelize
+@Entity(tableName = "sources")
 data class Source(
     val id: String? = null,
+    @PrimaryKey
     val name: String,
     val description: String? = null,
     val url: String? = null,

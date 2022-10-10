@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.App
-import com.danielpriddle.drpnews.data.database.entities.relations.ArticleAndSource
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
@@ -70,6 +70,22 @@ class ArticleListFragment : Fragment() {
         }
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
+
+        val queryTextListener = object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // do nothing, search is done on text changes
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { searchQuery ->
+                    articleViewModel.searchArticles(searchQuery)
+                }
+                return true
+            }
+        }
+
+        binding.searchView?.setOnQueryTextListener(queryTextListener)
 
         articleViewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
