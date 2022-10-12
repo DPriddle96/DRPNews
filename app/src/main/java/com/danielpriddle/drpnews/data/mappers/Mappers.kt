@@ -36,9 +36,9 @@ fun fromSourceModel(model: Source): SourceEntity {
         name = model.name,
         description = model.description,
         url = model.url,
-        country = model.country?.apiName,
-        category = model.category?.apiName,
-        language = model.language?.apiName
+        country = model.country,
+        category = model.category,
+        language = model.language
     )
 }
 
@@ -48,8 +48,8 @@ fun toSourceModel(sourceEntity: SourceEntity): Source {
         name = sourceEntity.name,
         description = sourceEntity.description,
         url = sourceEntity.url,
-        country = sourceEntity.country?.let { Country.valueOf(it) },
-        category = sourceEntity.category?.let { Category.valueOf(it) },
-        language = sourceEntity.language?.let { Language.valueOf(it) },
+        country = sourceEntity.country,
+        category = sourceEntity.category,
+        language = sourceEntity.language,
     )
 }
