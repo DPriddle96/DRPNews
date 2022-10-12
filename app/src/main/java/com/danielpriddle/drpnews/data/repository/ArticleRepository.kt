@@ -5,6 +5,6 @@ import com.danielpriddle.drpnews.data.networking.Result
 import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {
-    suspend fun getArticles(): Result<List<Article>>
+    fun getArticles(): Flow<Result<List<Article>>>
     suspend fun searchArticles(searchString: String): List<Article>
 }

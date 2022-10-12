@@ -1,9 +1,6 @@
 package com.danielpriddle.drpnews.data.models
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -17,11 +14,9 @@ import kotlinx.parcelize.Parcelize
  */
 
 @Parcelize
-@Entity(tableName = "articles")
 data class Article(
     val source: Source,
     val author: String? = null,
-    @PrimaryKey
     val title: String,
     val description: String? = null,
     val url: String,

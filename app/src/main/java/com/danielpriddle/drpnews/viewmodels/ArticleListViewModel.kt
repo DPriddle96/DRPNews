@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.danielpriddle.drpnews.data.networking.Failure
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
-import com.danielpriddle.drpnews.data.services.PreferencesDataStore
 import com.danielpriddle.drpnews.utils.State
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collect
@@ -44,10 +43,18 @@ class ArticleListViewModel(
 
     fun getArticles() {
         viewModelScope.launch(IO) {
-            when (val result = articleRepository.getArticles()) {
-                is Success -> _state.postValue(State.Ready(result.data))
-                is Failure -> _state.postValue(State.Error(result.error))
-            }
+            articleRepository.getArticles()
+                .onEach { result ->
+                    when (result) {
+                        is Success -> {
+                            _state.postValue(State.Ready(result.data))
+                        }
+                        is Failure -> {
+                            _state.postValue(State.Error(result.error))
+                        }
+                    }
+                }
+                .collect()
         }
 
     }
