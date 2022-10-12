@@ -9,7 +9,7 @@ import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.networking.Failure
 import com.danielpriddle.drpnews.data.networking.Result
 import com.danielpriddle.drpnews.data.networking.Success
-import com.danielpriddle.drpnews.data.services.APINewsService
+import com.danielpriddle.drpnews.data.networking.APINewsService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception

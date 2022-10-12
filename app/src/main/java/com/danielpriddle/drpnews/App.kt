@@ -7,8 +7,8 @@ import com.danielpriddle.drpnews.data.database.NewsDatabase
 import com.danielpriddle.drpnews.data.networking.buildApiService
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.data.repository.ArticleRepositoryImpl
-import com.danielpriddle.drpnews.data.services.APINewsService
-import com.danielpriddle.drpnews.data.services.PreferencesDataStoreImpl
+import com.danielpriddle.drpnews.data.networking.APINewsService
+import com.danielpriddle.drpnews.data.preferences.PreferencesDataStoreImpl
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
 
 class App : Application() {

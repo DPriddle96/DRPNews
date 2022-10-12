@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.data.services
+package com.danielpriddle.drpnews.data.preferences
 
 import kotlinx.coroutines.flow.Flow
 

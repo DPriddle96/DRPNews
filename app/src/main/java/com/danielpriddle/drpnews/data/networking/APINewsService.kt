@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.data.services
+package com.danielpriddle.drpnews.data.networking
 
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.networking.*

@@ -11,10 +11,9 @@ import androidx.work.*
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.models.Source
-import com.danielpriddle.drpnews.worker.FileClearWorker
-import com.danielpriddle.drpnews.worker.GlideWorker
-import com.danielpriddle.drpnews.worker.SepiaFilterWorker
+import com.danielpriddle.drpnews.workers.FileClearWorker
+import com.danielpriddle.drpnews.workers.GlideWorker
+import com.danielpriddle.drpnews.workers.SepiaFilterWorker
 
 /**
  * ArticleDetailFragment
