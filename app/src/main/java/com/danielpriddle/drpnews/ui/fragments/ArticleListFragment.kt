@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.App
 import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.data.networking.LocalSuccess
+import com.danielpriddle.drpnews.data.networking.RemoteSuccess
+import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
 import com.danielpriddle.drpnews.utils.State
@@ -73,7 +76,6 @@ class ArticleListFragment : Fragment() {
 
         val queryTextListener = object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // do nothing, search is done on text changes
                 return true
             }
 
@@ -88,9 +90,10 @@ class ArticleListFragment : Fragment() {
         binding.searchView?.setOnQueryTextListener(queryTextListener)
 
         articleViewModel.state.observe(viewLifecycleOwner) { state ->
+            println(state)
             when (state) {
                 is State.Loading -> binding.loadingView.root.visibility = View.VISIBLE
-                is State.Ready -> handleArticles(state.articles)
+                is State.Ready -> handleArticles(state.result)
                 is State.Error -> {
                     binding.loadingView.root.visibility = View.GONE
                     activity?.toast(state.error)
@@ -100,14 +103,25 @@ class ArticleListFragment : Fragment() {
 
     }
 
-    private fun handleArticles(articles: List<Article>) {
+    private fun handleArticles(result: Success<List<Article>>) {
+        val articles = result.data
         adapter.setArticleData(articles)
         binding.loadingView.root.visibility = View.GONE
-        if (articles.isNotEmpty()) {
-            if (articleRefreshLayout.isRefreshing) {
-                articleRefreshLayout.isRefreshing = false
-                activity?.toast("Got some breaking news for ya!")
+        when (result) {
+            is LocalSuccess -> {
+                activity?.toast("Got some news from your database!")
+                checkIsRefreshing()
             }
+            is RemoteSuccess -> {
+                activity?.toast("Updated your news database with the latest news!")
+                checkIsRefreshing()
+            }
+        }
+    }
+
+    private fun checkIsRefreshing() {
+        if (articleRefreshLayout.isRefreshing) {
+            articleRefreshLayout.isRefreshing = false
         }
     }
 

@@ -2,6 +2,8 @@ package com.danielpriddle.drpnews.viewmodels
 
 import androidx.lifecycle.*
 import com.danielpriddle.drpnews.data.networking.Failure
+import com.danielpriddle.drpnews.data.networking.LocalSuccess
+import com.danielpriddle.drpnews.data.networking.RemoteSuccess
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.State
@@ -46,12 +48,16 @@ class ArticleListViewModel(
             articleRepository.getArticles()
                 .onEach { result ->
                     when (result) {
-                        is Success -> {
-                            _state.postValue(State.Ready(result.data))
+                        is LocalSuccess -> {
+                            _state.postValue(State.Ready(result))
+                        }
+                        is RemoteSuccess -> {
+                            _state.postValue(State.Ready(result))
                         }
                         is Failure -> {
                             _state.postValue(State.Error(result.error))
                         }
+                        else -> {}
                     }
                 }
                 .collect()
@@ -62,7 +68,7 @@ class ArticleListViewModel(
     fun searchArticles(searchString: String) {
         viewModelScope.launch(IO) {
             val filteredArticles = articleRepository.searchArticles("%$searchString%")
-            _state.postValue(State.Ready(filteredArticles))
+            _state.postValue(State.Ready(Success(filteredArticles)))
         }
     }
 }

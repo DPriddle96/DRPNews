@@ -4,7 +4,7 @@ import com.danielpriddle.drpnews.data.database.entities.ArticleEntity
 import com.danielpriddle.drpnews.data.database.entities.SourceEntity
 import com.danielpriddle.drpnews.data.models.*
 
-fun fromArticleModel(model: Article): ArticleEntity {
+fun toArticleEntity(model: Article): ArticleEntity {
     return ArticleEntity(
         title = model.title,
         source = model.source.name,
@@ -30,7 +30,7 @@ fun toArticleModel(articleEntity: ArticleEntity, sourceEntity: SourceEntity): Ar
     )
 }
 
-fun fromSourceModel(model: Source): SourceEntity {
+fun toSourceEntity(model: Source): SourceEntity {
     return SourceEntity(
         id = model.id,
         name = model.name,

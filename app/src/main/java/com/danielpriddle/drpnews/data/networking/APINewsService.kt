@@ -1,7 +1,6 @@
 package com.danielpriddle.drpnews.data.networking
 
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.*
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
 import com.danielpriddle.drpnews.utils.handleAPIError
 
@@ -18,10 +17,10 @@ class APINewsService(
     private val networkStatusChecker: NetworkStatusChecker,
 ) {
     suspend fun getTopHeadlines(): Result<List<Article>> {
-        return if (networkStatusChecker.hasInternetConnection) {
+        return if (networkStatusChecker.hasInternetConnection()) {
             val response = api.getTopHeadlines(country = "us")
             if (response.isSuccessful) {
-                Success(response.body()!!.articles)
+                RemoteSuccess(response.body()!!.articles)
             } else {
                 handleAPIError(response)
             }

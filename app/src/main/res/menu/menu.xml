@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/wifi_switch"
+        android:id="@+id/wifi_switch_item"
         android:title="@string/download_only_over_wifi"
         app:actionLayout="@layout/switch_item"
-        app:showAsAction="always|withText" />
+        app:showAsAction="always" />
 </menu>

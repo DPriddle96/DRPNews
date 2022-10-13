@@ -24,12 +24,16 @@ class App : Application() {
                 NetworkStatusChecker(instance.getSystemService(ConnectivityManager::class.java)))
         }
 
-        val articleRepository: ArticleRepository by lazy {
-            ArticleRepositoryImpl(newsService, database.articleDao(), database.sourceDao())
-        }
-
         val prefsDataStore by lazy { PreferencesDataStoreImpl(instance.dataStore) }
 
+        val articleRepository: ArticleRepository by lazy {
+            ArticleRepositoryImpl(
+                newsService,
+                database.articleDao(),
+                database.sourceDao(),
+                prefsDataStore,
+                NetworkStatusChecker(instance.getSystemService(ConnectivityManager::class.java)))
+        }
     }
 
     override fun onCreate() {
