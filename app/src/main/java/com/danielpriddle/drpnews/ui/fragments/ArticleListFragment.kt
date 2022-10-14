@@ -1,22 +1,22 @@
 package com.danielpriddle.drpnews.ui.fragments
 
-import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.danielpriddle.drpnews.App
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.buildApiService
-import com.danielpriddle.drpnews.data.repository.ArticleRepository
-import com.danielpriddle.drpnews.data.services.APINewsService
+import com.danielpriddle.drpnews.data.networking.LocalSuccess
+import com.danielpriddle.drpnews.data.networking.RemoteSuccess
+import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
-import com.danielpriddle.drpnews.utils.NetworkStatusChecker
 import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
 import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
@@ -34,13 +34,9 @@ import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 class ArticleListFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleListBinding
-    private val newsService by lazy {
-        APINewsService(buildApiService(),
-            NetworkStatusChecker(activity?.getSystemService(ConnectivityManager::class.java)))
-    }
 
     private val articleViewModel: ArticleListViewModel by viewModels {
-        ArticleListViewModel.Factory(ArticleRepository(newsService))
+        ArticleListViewModel.Factory(App.articleRepository)
     }
 
     //need a global instance of this since data population is now decoupled.
@@ -78,10 +74,26 @@ class ArticleListFragment : Fragment() {
         binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.articleListRecyclerView.adapter = adapter
 
+        val queryTextListener = object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { searchQuery ->
+                    articleViewModel.searchArticles(searchQuery)
+                }
+                return true
+            }
+        }
+
+        binding.searchView?.setOnQueryTextListener(queryTextListener)
+
         articleViewModel.state.observe(viewLifecycleOwner) { state ->
+            println(state)
             when (state) {
                 is State.Loading -> binding.loadingView.root.visibility = View.VISIBLE
-                is State.Ready -> handleArticles(state.articles)
+                is State.Ready -> handleArticles(state.result)
                 is State.Error -> {
                     binding.loadingView.root.visibility = View.GONE
                     activity?.toast(state.error)
@@ -91,14 +103,25 @@ class ArticleListFragment : Fragment() {
 
     }
 
-    private fun handleArticles(articles: List<Article>) {
+    private fun handleArticles(result: Success<List<Article>>) {
+        val articles = result.data
         adapter.setArticleData(articles)
         binding.loadingView.root.visibility = View.GONE
-        if (articles.isNotEmpty()) {
-            if (articleRefreshLayout.isRefreshing) {
-                articleRefreshLayout.isRefreshing = false
-                activity?.toast("Got some breaking news for ya!")
+        when (result) {
+            is LocalSuccess -> {
+                activity?.toast("Got some news from your database!")
+                checkIsRefreshing()
             }
+            is RemoteSuccess -> {
+                activity?.toast("Updated your news database with the latest news!")
+                checkIsRefreshing()
+            }
+        }
+    }
+
+    private fun checkIsRefreshing() {
+        if (articleRefreshLayout.isRefreshing) {
+            articleRefreshLayout.isRefreshing = false
         }
     }
 

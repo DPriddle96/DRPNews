@@ -10,9 +10,8 @@ import android.net.NetworkCapabilities
  * to check if a client device is connected to the internet before performing HTTP requests.
  */
 class NetworkStatusChecker(private val connectivityManager: ConnectivityManager?) {
-    val hasInternetConnection = hasInternetConnection()
 
-    private fun hasInternetConnection(): Boolean {
+    fun hasInternetConnection(): Boolean {
         val network = connectivityManager?.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
 
@@ -20,4 +19,12 @@ class NetworkStatusChecker(private val connectivityManager: ConnectivityManager?
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
                 || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
     }
+
+    fun hasWifiConnection(): Boolean {
+        val network = connectivityManager?.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
+
+
 }

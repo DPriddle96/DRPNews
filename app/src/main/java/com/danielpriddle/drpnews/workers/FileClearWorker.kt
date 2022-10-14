@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.worker
+package com.danielpriddle.drpnews.workers
 
 import android.content.Context
 import androidx.work.Worker
