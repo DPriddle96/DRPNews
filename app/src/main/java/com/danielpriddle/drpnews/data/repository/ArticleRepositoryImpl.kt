@@ -37,7 +37,7 @@ class ArticleRepositoryImpl(
             }
             emit(LocalSuccess(localArticles))
             val isDownloadOverWifiOnly = dataStore.isDownloadOverWifiOnly().first()
-            if (!isDownloadOverWifiOnly || (isDownloadOverWifiOnly && networkStatusChecker.hasWifiConnection())) {
+            if (!isDownloadOverWifiOnly || networkStatusChecker.hasWifiConnection()) {
                 try {
                     val remoteArticlesResult = newsService.getTopHeadlines()
                     if (remoteArticlesResult is RemoteSuccess) {

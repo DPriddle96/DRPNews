@@ -20,7 +20,8 @@ class App : Application() {
             NewsDatabase.buildDatabase(instance)
         }
         private val newsService by lazy {
-            APINewsService(buildApiService(),
+            APINewsService(
+                buildApiService(),
                 NetworkStatusChecker(instance.getSystemService(ConnectivityManager::class.java)))
         }
 
