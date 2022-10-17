@@ -17,9 +17,10 @@ import com.danielpriddle.drpnews.data.networking.RemoteSuccess
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
+import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
-import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
+import com.danielpriddle.drpnews.data.viewmodels.ArticleListViewModel
 
 /**
  * ArticleListFragment
@@ -31,7 +32,7 @@ import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
  * the user swipes down to refresh.
  * @author Dan Priddle
  */
-class ArticleListFragment : Fragment() {
+class ArticleListFragment : Fragment(), Logger {
 
     private lateinit var binding: FragmentArticleListBinding
 
@@ -90,7 +91,7 @@ class ArticleListFragment : Fragment() {
         binding.searchView?.setOnQueryTextListener(queryTextListener)
 
         articleViewModel.state.observe(viewLifecycleOwner) { state ->
-            println(state)
+            logDebug("ArticleViewModel state: ${state.javaClass.simpleName}")
             when (state) {
                 is State.Loading -> binding.loadingView.root.visibility = View.VISIBLE
                 is State.Ready -> handleArticles(state.result)
@@ -105,6 +106,7 @@ class ArticleListFragment : Fragment() {
 
     private fun handleArticles(result: Success<List<Article>>) {
         val articles = result.data
+        logInfo("Sending article data to the ArticleListAdapter...")
         adapter.setArticleData(articles)
         binding.loadingView.root.visibility = View.GONE
         when (result) {

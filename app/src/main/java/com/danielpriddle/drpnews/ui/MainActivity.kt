@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.SwitchCompat
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.ActivityMainBinding
-import com.danielpriddle.drpnews.viewmodels.MainActivityViewModel
+import com.danielpriddle.drpnews.data.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 

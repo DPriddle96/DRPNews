@@ -5,12 +5,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import com.danielpriddle.drpnews.utils.Logger
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
-    PreferencesDataStore {
+    PreferencesDataStore, Logger {
 
     override fun isDownloadOverWifiOnly() = dataStore.data.catch { exception ->
         if (exception is IOException) {
@@ -22,6 +23,7 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
 
 
     override suspend fun toggleDownloadOverWifiOnly() {
+        logInfo("Toggling Download Over WiFi Only setting...")
         dataStore.edit {
             it[PreferencesKeys.WIFI_ONLY_KEY] = !(it[PreferencesKeys.WIFI_ONLY_KEY] ?: false)
         }

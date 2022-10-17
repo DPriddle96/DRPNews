@@ -11,6 +11,7 @@ import androidx.work.*
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.workers.FileClearWorker
 import com.danielpriddle.drpnews.workers.GlideWorker
 import com.danielpriddle.drpnews.workers.SepiaFilterWorker
@@ -23,7 +24,7 @@ import com.danielpriddle.drpnews.workers.SepiaFilterWorker
  * argument and displays a custom ArticleView.
  * @author Dan Priddle
  */
-class ArticleDetailFragment : Fragment() {
+class ArticleDetailFragment : Fragment(), Logger {
 
     private lateinit var binding: FragmentArticleDetailBinding
     private lateinit var article: Article
@@ -33,6 +34,7 @@ class ArticleDetailFragment : Fragment() {
         arguments?.let {
             val safeArgs = ArticleDetailFragmentArgs.fromBundle(it)
             article = safeArgs.article
+            logDebug("Article Details: $article")
         }
     }
 
