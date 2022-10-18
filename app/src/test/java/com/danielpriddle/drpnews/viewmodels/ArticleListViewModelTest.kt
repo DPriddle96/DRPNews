@@ -6,12 +6,15 @@ import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import io.mockk.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class ArticleListViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -27,14 +30,21 @@ class ArticleListViewModelTest {
     }
 
     @Test
-    fun getArticlesGetsData() = runBlocking {
+    fun getArticlesGetsData() = runTest {
         coEvery {
             articleRepository.getArticles()
         } returns flow { Success(emptyList<Article>()) }
         sut.getArticles()
 
-        // Use coVerify for suspend functions
-        // (I'm assuming the repo's getArticles() is a suspend fun here)
         coVerify(exactly = 2) { articleRepository.getArticles() }
+    }
+
+    @Test
+    fun initArticlesGetsData() = runTest {
+        coEvery {
+            articleRepository.getArticles()
+        } returns flow { Success(emptyList<Article>()) }
+
+        coVerify(exactly = 1) { articleRepository.getArticles() }
     }
 }
