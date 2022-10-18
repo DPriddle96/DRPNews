@@ -19,7 +19,7 @@ class APINewsService(
     private val api: NewsAPI,
     private val networkStatusChecker: NetworkStatusChecker,
 ) : Logger {
-    suspend fun getTopHeadlines(): Result<List<Article>> {
+    suspend fun getTopHeadlines(): DataResult<List<Article>> {
         return if (networkStatusChecker.hasInternetConnection()) {
             val response = api.getTopHeadlines(country = "us")
             logDebug("getTopHeadlines Response: $response")

@@ -7,17 +7,20 @@ import com.danielpriddle.drpnews.data.networking.*
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.data.repository.ArticleRepositoryImpl
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ArticleRepositoryTests {
     private val mockAPINewsService = mockk<APINewsService>()
-    private val mockArticleDao = mockk<ArticleDao>(relaxed = true)
+    private val mockArticleDao = mockk<ArticleDao>()
     private val mockSourceDao = mockk<SourceDao>()
     private val mockDataStore = mockk<PreferencesDataStore>()
     private val mockNetworkStatusChecker = mockk<NetworkStatusChecker>()
@@ -30,6 +33,9 @@ class ArticleRepositoryTests {
 
     @Test
     fun getArticlesEmitsLocalSuccess() = runTest {
+        coEvery {
+            mockArticleDao.getArticles()
+        } returns emptyList()
         sut.getArticles().onEach { result ->
             assertEquals(LocalSuccess(emptyList<Article>()), result)
         }
@@ -37,6 +43,9 @@ class ArticleRepositoryTests {
 
     @Test
     fun getArticlesEmitsRemoteSuccess() = runTest {
+        coEvery {
+            mockArticleDao.getArticles()
+        } returns emptyList()
         sut.getArticles().onEach { result ->
             assertEquals(RemoteSuccess(emptyList<Article>()), result)
         }
@@ -44,6 +53,9 @@ class ArticleRepositoryTests {
 
     @Test
     fun searchArticlesReturnsData() = runTest {
+        coEvery {
+            mockArticleDao.searchArticles("")
+        } returns emptyList()
         val articles = sut.searchArticles("")
 
         assertEquals(emptyList<Article>(), articles)

@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.data.viewmodels
+package com.danielpriddle.drpnews.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

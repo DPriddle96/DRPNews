@@ -29,7 +29,7 @@ class ArticleRepositoryImpl(
     private val networkStatusChecker: NetworkStatusChecker,
 ) : ArticleRepository {
 
-    override fun getArticles(): Flow<Result<List<Article>>> {
+    override fun getArticles(): Flow<DataResult<List<Article>>> {
         return flow {
             //logInfo("Retrieving local articles from the database...")
             val localArticles = articleDao.getArticles().map { articleAndSource ->

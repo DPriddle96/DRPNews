@@ -20,7 +20,7 @@ import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
 import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
-import com.danielpriddle.drpnews.data.viewmodels.ArticleListViewModel
+import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 
 /**
  * ArticleListFragment
