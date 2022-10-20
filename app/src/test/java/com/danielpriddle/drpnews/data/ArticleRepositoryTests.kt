@@ -8,13 +8,11 @@ import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.data.repository.ArticleRepositoryImpl
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi

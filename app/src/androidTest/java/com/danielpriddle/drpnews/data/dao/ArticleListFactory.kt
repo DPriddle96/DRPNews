@@ -1,8 +1,6 @@
 package com.danielpriddle.drpnews.data.dao
 
 import com.danielpriddle.drpnews.data.database.entities.ArticleEntity
-import com.danielpriddle.drpnews.data.mappers.toSourceEntity
-import com.danielpriddle.drpnews.data.models.Source
 
 object ArticleListFactory {
     fun makeArticleListSeed(): List<ArticleEntity> {

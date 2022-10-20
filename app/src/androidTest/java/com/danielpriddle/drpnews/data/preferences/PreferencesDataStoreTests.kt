@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File

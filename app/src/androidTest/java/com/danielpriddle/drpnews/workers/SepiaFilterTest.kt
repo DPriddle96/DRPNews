@@ -10,13 +10,12 @@ import androidx.work.impl.utils.SynchronousExecutor
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.work.workDataOf
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class SepiaFilterTest {
-    private val IMAGE_PATH =
+    private val imagePath =
         "/data/user/0/com.danielpriddle.drpnews/cache/image_manager_disk_cache/4a685ca1cd8e58c058acde2d24dbb409aa6ed36ca0d4f8df27ac3e993f034eb1.0"
     private lateinit var workManager: WorkManager
     private lateinit var context: Context
@@ -39,7 +38,7 @@ class SepiaFilterTest {
     fun testSepiaFilterWork() {
         val worker = TestListenableWorkerBuilder<SepiaFilterWorker>(
             context = context,
-            inputData = workDataOf("image_path" to IMAGE_PATH)
+            inputData = workDataOf("image_path" to imagePath)
         ).build()
 
         // Start the work synchronously
