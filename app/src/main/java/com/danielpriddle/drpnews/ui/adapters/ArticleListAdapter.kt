@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danielpriddle.drpnews.databinding.ArticleListViewHolderBinding
 import com.danielpriddle.drpnews.data.models.Article
+import com.danielpriddle.drpnews.utils.Logger
 
 /**
  * ArticleDataManager
@@ -16,7 +17,7 @@ import com.danielpriddle.drpnews.data.models.Article
  */
 class ArticleListAdapter(
     private val clickListener: (Article) -> Unit,
-) : RecyclerView.Adapter<ArticleListViewHolder>() {
+) : RecyclerView.Adapter<ArticleListViewHolder>(), Logger {
 
     //update 9/19/2022: Move this outside of parameters and make it mutable to help with refresh
     private val articles: MutableList<Article> = mutableListOf()
@@ -56,5 +57,6 @@ class ArticleListAdapter(
         this.articles.clear()
         this.articles.addAll(articles)
         notifyDataSetChanged()
+        logInfo("Article data set in adapter!")
     }
 }

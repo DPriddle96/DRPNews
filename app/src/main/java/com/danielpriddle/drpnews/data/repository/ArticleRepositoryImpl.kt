@@ -29,12 +29,14 @@ class ArticleRepositoryImpl(
     private val networkStatusChecker: NetworkStatusChecker,
 ) : ArticleRepository {
 
-    override fun getArticles(): Flow<Result<List<Article>>> {
+    override fun getArticles(): Flow<DataResult<List<Article>>> {
         return flow {
+            //logInfo("Retrieving local articles from the database...")
             val localArticles = articleDao.getArticles().map { articleAndSource ->
                 toArticleModel(articleAndSource.article,
                     articleAndSource.source)
             }
+            //logInfo("Articles retrieved from local database successfully. Emitting LocalSuccess!")
             emit(LocalSuccess(localArticles))
             val isDownloadOverWifiOnly = dataStore.isDownloadOverWifiOnly().first()
             if (!isDownloadOverWifiOnly || networkStatusChecker.hasWifiConnection()) {
@@ -42,17 +44,21 @@ class ArticleRepositoryImpl(
                     val remoteArticlesResult = newsService.getTopHeadlines()
                     if (remoteArticlesResult is RemoteSuccess) {
                         val remoteArticles = remoteArticlesResult.data
+                        //logInfo("Articles retrieved from NewsAPI successfully. Emitting RemoteSuccess!")
                         emit(RemoteSuccess(remoteArticles))
                         if (remoteArticles.isNotEmpty()) {
                             remoteArticles.forEach { article ->
                                 sourceDao.addSource(toSourceEntity(article.source))
                             }
+                            //logInfo("Sources added to local database!")
                             articleDao.addArticles(remoteArticles.map { article ->
                                 toArticleEntity(article)
                             })
+                            //logInfo("Articles added to local database!")
                         }
                     }
                 } catch (e: Exception) {
+                    //logError("Error fetching remote articles: ${e.message}")
                     emit(Failure(e.message!!))
                 }
             }

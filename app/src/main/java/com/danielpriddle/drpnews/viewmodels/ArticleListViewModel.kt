@@ -6,6 +6,7 @@ import com.danielpriddle.drpnews.data.networking.LocalSuccess
 import com.danielpriddle.drpnews.data.networking.RemoteSuccess
 import com.danielpriddle.drpnews.data.networking.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
+import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.State
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collect
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class ArticleListViewModel(
     private val articleRepository: ArticleRepository,
-) : ViewModel() {
+) : ViewModel(), Logger {
 
     class Factory(
         private val articleRepository: ArticleRepository,
@@ -33,6 +34,8 @@ class ArticleListViewModel(
             return ArticleListViewModel(articleRepository) as T
         }
     }
+
+    //private val TAG = javaClass.simpleName
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
@@ -47,6 +50,7 @@ class ArticleListViewModel(
         viewModelScope.launch(IO) {
             articleRepository.getArticles()
                 .onEach { result ->
+                    logDebug("ArticleViewModel call to repository result: ${result.javaClass.simpleName}")
                     when (result) {
                         is LocalSuccess -> {
                             _state.postValue(State.Ready(result))
