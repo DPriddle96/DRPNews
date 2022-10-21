@@ -1,17 +1,19 @@
 package com.danielpriddle.drpnews.viewmodels
 
 import androidx.lifecycle.*
-import com.danielpriddle.drpnews.data.networking.Failure
-import com.danielpriddle.drpnews.data.networking.LocalSuccess
-import com.danielpriddle.drpnews.data.networking.RemoteSuccess
-import com.danielpriddle.drpnews.data.networking.Success
+import com.danielpriddle.drpnews.data.models.Failure
+import com.danielpriddle.drpnews.data.models.LocalSuccess
+import com.danielpriddle.drpnews.data.models.RemoteSuccess
+import com.danielpriddle.drpnews.data.models.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.State
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ArticleListViewModel
@@ -23,19 +25,10 @@ import kotlinx.coroutines.launch
  * @author Dan Priddle
  */
 
-class ArticleListViewModel(
+@HiltViewModel
+class ArticleListViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
 ) : ViewModel(), Logger {
-
-    class Factory(
-        private val articleRepository: ArticleRepository,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ArticleListViewModel(articleRepository) as T
-        }
-    }
-
-    //private val TAG = javaClass.simpleName
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state

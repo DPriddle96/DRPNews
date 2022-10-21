@@ -1,7 +1,7 @@
 package com.danielpriddle.drpnews.utils
 
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.Success
+import com.danielpriddle.drpnews.data.models.Success
 
 sealed class State {
     object Loading : State()

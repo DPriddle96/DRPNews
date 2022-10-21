@@ -1,18 +1,23 @@
 package com.danielpriddle.drpnews.data
 
+import android.util.Log
 import com.danielpriddle.drpnews.data.database.dao.ArticleDao
 import com.danielpriddle.drpnews.data.database.dao.SourceDao
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.*
+import com.danielpriddle.drpnews.data.models.LocalSuccess
+import com.danielpriddle.drpnews.data.models.RemoteSuccess
+import com.danielpriddle.drpnews.data.networking.APINewsService
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.data.repository.ArticleRepositoryImpl
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -28,6 +33,11 @@ class ArticleRepositoryTests {
         mockSourceDao,
         mockDataStore,
         mockNetworkStatusChecker)
+
+    @Before
+    fun setup() {
+        mockkStatic(Log::class)
+    }
 
     @Test
     fun getArticlesEmitsLocalSuccess() = runTest {

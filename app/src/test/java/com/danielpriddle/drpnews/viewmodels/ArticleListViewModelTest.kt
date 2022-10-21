@@ -3,7 +3,7 @@ package com.danielpriddle.drpnews.viewmodels
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.Success
+import com.danielpriddle.drpnews.data.models.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

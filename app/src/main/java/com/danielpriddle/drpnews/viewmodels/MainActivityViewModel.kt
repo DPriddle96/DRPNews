@@ -4,23 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.danielpriddle.drpnews.App
+import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.utils.Logger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivityViewModel : ViewModel(), Logger {
-    class Factory : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainActivityViewModel() as T
-        }
-    }
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(private val preferencesDataStore: PreferencesDataStore) :
+    ViewModel(), Logger {
 
-    val isDownloadOverWifiOnly = App.prefsDataStore.isDownloadOverWifiOnly().asLiveData()
+    val isDownloadOverWifiOnly = preferencesDataStore.isDownloadOverWifiOnly().asLiveData()
 
     fun toggleDownloadOverWifiOnly() {
         viewModelScope.launch(IO) {
-            App.prefsDataStore.toggleDownloadOverWifiOnly()
+            preferencesDataStore.toggleDownloadOverWifiOnly()
         }
     }
 

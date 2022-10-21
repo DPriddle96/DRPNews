@@ -1,5 +1,6 @@
-package com.danielpriddle.drpnews.data.models
+package com.danielpriddle.drpnews.data.networking
 
+import com.danielpriddle.drpnews.data.models.Article
 import com.squareup.moshi.Json
 
 /**

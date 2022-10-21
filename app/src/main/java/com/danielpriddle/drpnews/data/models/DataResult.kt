@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.data.networking
+package com.danielpriddle.drpnews.data.models
 
 /**
  * Error handling utility classes based on
