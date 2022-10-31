@@ -7,16 +7,20 @@
 
     <fragment
         android:id="@+id/articleListFragment"
-        android:name="com.danielpriddle.drpnews.ui.fragments.ArticleListFragment"
+        android:name="com.danielpriddle.drpnews.ui.ArticleListFragment"
         android:label="fragment_article_list"
         tools:layout="@layout/fragment_article_list">
         <action
             android:id="@+id/actionListToArticle"
-            app:destination="@id/articleDetailFragment" />
+            app:destination="@id/articleDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/articleDetailFragment"
-        android:name="com.danielpriddle.drpnews.ui.fragments.ArticleDetailFragment"
+        android:name="com.danielpriddle.drpnews.ui.ArticleDetailFragment"
         android:label="fragment_article_detail"
         tools:layout="@layout/fragment_article_detail">
         <argument

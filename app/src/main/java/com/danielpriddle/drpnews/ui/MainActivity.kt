@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         val switchItem = menu!!.findItem(R.id.wifi_switch_item)
-        val switch = switchItem.actionView.findViewById<SwitchCompat>(R.id.wifi_switch)
+        val switch = switchItem.actionView!!.findViewById<SwitchCompat>(R.id.wifi_switch)
         viewModel.isDownloadOverWifiOnly.observe(this) { isDownloadOverWifiOnly ->
             switch.isChecked = isDownloadOverWifiOnly
             if (isDownloadOverWifiOnly) {
