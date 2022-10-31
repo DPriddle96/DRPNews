@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
-import com.danielpriddle.drpnews.ui.composables.ArticleListComposable
 import com.danielpriddle.drpnews.utils.*
 import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
