@@ -1,11 +1,11 @@
 package com.danielpriddle.drpnews.data.networking
 
-import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.models.NewsAPIErrorResponse
-import com.danielpriddle.drpnews.data.models.NewsAPIResponse
+import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.utils.*
 import com.google.gson.Gson
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * APINewsService
@@ -15,7 +15,9 @@ import retrofit2.Response
  * by handling network connection issues and client side errors.
  * @author Dan Priddle
  */
-class APINewsService(
+
+@Singleton
+class APINewsService @Inject constructor(
     private val api: NewsAPI,
     private val networkStatusChecker: NetworkStatusChecker,
 ) : Logger {

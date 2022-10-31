@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.data.models
+package com.danielpriddle.drpnews.data.networking
 
 /**
  * NewsAPIErrorResponse

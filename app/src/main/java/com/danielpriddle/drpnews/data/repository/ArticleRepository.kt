@@ -1,7 +1,7 @@
 package com.danielpriddle.drpnews.data.repository
 
 import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.DataResult
+import com.danielpriddle.drpnews.data.models.DataResult
 import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {

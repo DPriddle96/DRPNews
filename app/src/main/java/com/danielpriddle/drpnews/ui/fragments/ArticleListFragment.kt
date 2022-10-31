@@ -10,17 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.danielpriddle.drpnews.App
-import com.danielpriddle.drpnews.data.models.Article
-import com.danielpriddle.drpnews.data.networking.LocalSuccess
-import com.danielpriddle.drpnews.data.networking.RemoteSuccess
-import com.danielpriddle.drpnews.data.networking.Success
+import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
 import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
 import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.State
 import com.danielpriddle.drpnews.utils.toast
 import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * ArticleListFragment
@@ -32,13 +29,12 @@ import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
  * the user swipes down to refresh.
  * @author Dan Priddle
  */
+@AndroidEntryPoint
 class ArticleListFragment : Fragment(), Logger {
 
     private lateinit var binding: FragmentArticleListBinding
 
-    private val articleViewModel: ArticleListViewModel by viewModels {
-        ArticleListViewModel.Factory(App.articleRepository)
-    }
+    private val articleViewModel: ArticleListViewModel by viewModels()
 
     //need a global instance of this since data population is now decoupled.
     private val adapter by lazy {
