@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.ui.fragments
+package com.danielpriddle.drpnews.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,16 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.compose.material.MaterialTheme
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.databinding.FragmentArticleListBinding
-import com.danielpriddle.drpnews.ui.adapters.ArticleListAdapter
-import com.danielpriddle.drpnews.utils.Logger
-import com.danielpriddle.drpnews.utils.State
-import com.danielpriddle.drpnews.utils.toast
+import com.danielpriddle.drpnews.utils.*
 import com.danielpriddle.drpnews.viewmodels.ArticleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,40 +32,18 @@ class ArticleListFragment : Fragment(), Logger {
 
     private val articleViewModel: ArticleListViewModel by viewModels()
 
-    //need a global instance of this since data population is now decoupled.
-    private val adapter by lazy {
-        ArticleListAdapter { article ->
-            val action = ArticleListFragmentDirections.actionListToArticle(article)
-            findNavController().navigate(action)
-        }
-    }
-
-    //SwipeRefreshLayout instance to initialize later
-    private lateinit var articleRefreshLayout: SwipeRefreshLayout
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentArticleListBinding.inflate(inflater, container, false)
+        fadeIn(binding.root)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-           initialize the SwipeRefreshLayout and set up a listener that displays a refreshing spinner
-           while retrieving Article data from the API
-         */
-        articleRefreshLayout = binding.articleRefreshLayout
-        articleRefreshLayout.setOnRefreshListener {
-            articleRefreshLayout.isRefreshing = true
-            articleViewModel.getArticles()
-        }
-        binding.articleListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.articleListRecyclerView.adapter = adapter
 
         val queryTextListener = object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -84,7 +58,7 @@ class ArticleListFragment : Fragment(), Logger {
             }
         }
 
-        binding.searchView?.setOnQueryTextListener(queryTextListener)
+        binding.searchView.setOnQueryTextListener(queryTextListener)
 
         articleViewModel.state.observe(viewLifecycleOwner) { state ->
             logDebug("ArticleViewModel state: ${state.javaClass.simpleName}")
@@ -103,24 +77,25 @@ class ArticleListFragment : Fragment(), Logger {
     private fun handleArticles(result: Success<List<Article>>) {
         val articles = result.data
         logInfo("Sending article data to the ArticleListAdapter...")
-        adapter.setArticleData(articles)
+        binding.composeView.setContent {
+            MaterialTheme {
+                ArticleListComposable(
+                    articles,
+                    clickListener = { article ->
+                        val action = ArticleListFragmentDirections.actionListToArticle(article)
+                        findNavController().navigate(action)
+                    }
+                )
+            }
+        }
         binding.loadingView.root.visibility = View.GONE
         when (result) {
             is LocalSuccess -> {
                 activity?.toast("Got some news from your database!")
-                checkIsRefreshing()
             }
             is RemoteSuccess -> {
                 activity?.toast("Updated your news database with the latest news!")
-                checkIsRefreshing()
             }
         }
     }
-
-    private fun checkIsRefreshing() {
-        if (articleRefreshLayout.isRefreshing) {
-            articleRefreshLayout.isRefreshing = false
-        }
-    }
-
 }

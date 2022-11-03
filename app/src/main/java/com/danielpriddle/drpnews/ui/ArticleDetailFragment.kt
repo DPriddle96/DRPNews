@@ -1,4 +1,4 @@
-package com.danielpriddle.drpnews.ui.fragments
+package com.danielpriddle.drpnews.ui
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.databinding.FragmentArticleDetailBinding
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.utils.Logger
+import com.danielpriddle.drpnews.utils.fadeIn
 import com.danielpriddle.drpnews.workers.FileClearWorker
 import com.danielpriddle.drpnews.workers.GlideWorker
 import com.danielpriddle.drpnews.workers.SepiaFilterWorker
@@ -54,6 +55,7 @@ class ArticleDetailFragment : Fragment(), Logger {
         setArticlePublishedAt(article.publishedAt)
         setArticleImage(article.urlToImage)
 
+        fadeIn(binding.root)
         return binding.root
     }
 
@@ -142,10 +144,10 @@ class ArticleDetailFragment : Fragment(), Logger {
                         if (!path.isNullOrEmpty()) {
                             val bitmap = BitmapFactory.decodeFile(path)
                             binding.articleImageView.setImageBitmap(bitmap)
+                            fadeIn(binding.articleImageView)
                         }
                     }
                 }
-            //Glide.with(this).load(urlToImage).into(binding.articleImageView)
         } else {
             //need this, otherwise UI doesn't paint
             binding.articleImageView.visibility = LinearLayout.GONE
