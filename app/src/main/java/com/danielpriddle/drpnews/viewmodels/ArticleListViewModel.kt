@@ -1,6 +1,8 @@
 package com.danielpriddle.drpnews.viewmodels
 
+import android.content.res.Resources
 import androidx.lifecycle.*
+import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.Failure
 import com.danielpriddle.drpnews.data.models.LocalSuccess
 import com.danielpriddle.drpnews.data.models.RemoteSuccess
@@ -48,11 +50,13 @@ class ArticleListViewModel @Inject constructor(
                 when (result) {
                     is LocalSuccess -> {
                         _state.value = ViewState.Ready(result)
-                        _toastMessage.emit("Got some news from your database!")
+                        _toastMessage.emit(Resources.getSystem()
+                            .getString(R.string.local_success_toast))
                     }
                     is RemoteSuccess -> {
                         _state.value = ViewState.Ready(result)
-                        _toastMessage.emit("Updated your news database with the latest news!")
+                        _toastMessage.emit(Resources.getSystem()
+                            .getString(R.string.remote_success_toast))
                     }
                     is Failure -> {
                         _state.value = ViewState.Error(result.error)

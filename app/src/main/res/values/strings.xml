@@ -11,4 +11,6 @@
     <string name="no_articles">No articles to display…</string>
     <string name="settings">Settings</string>
     <string name="detail_route_error">Please make sure you are passing an article</string>
+    <string name="local_success_toast">Got some news from your database!</string>
+    <string name="remote_success_toast">Updated your news database with the latest news!</string>
 </resources>
