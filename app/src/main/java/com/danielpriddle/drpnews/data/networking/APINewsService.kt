@@ -1,5 +1,7 @@
 package com.danielpriddle.drpnews.data.networking
 
+import android.content.res.Resources
+import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.utils.*
 import com.google.gson.Gson
@@ -43,7 +45,7 @@ class APINewsService @Inject constructor(
         val gson = Gson()
 
         return if (response.code() == 404) {
-            val message = "We could not find the news you're looking for!"
+            val message = Resources.getSystem().getString(R.string.notFound_error)
             logError(message)
             Failure(message)
         } else {

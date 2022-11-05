@@ -2,34 +2,33 @@ package com.danielpriddle.drpnews.data.preferences
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import com.danielpriddle.drpnews.utils.Logger
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import java.io.IOException
 
 class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
     PreferencesDataStore, Logger {
 
-    override fun isDownloadOverWifiOnly() = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.map { it[PreferencesKeys.WIFI_ONLY_KEY] ?: false }
+    override fun getPreference(preferenceKey: Preferences.Key<Boolean>) =
+        dataStore.data.catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { it[preferenceKey] ?: false }
+            .stateIn(CoroutineScope(Dispatchers.IO), SharingStarted.Lazily, false)
 
 
-    override suspend fun toggleDownloadOverWifiOnly() {
-        logInfo("Toggling Download Over WiFi Only setting...")
+    override suspend fun togglePreference(preferenceKey: Preferences.Key<Boolean>) {
+        logInfo("Toggling ${preferenceKey.name}...")
         dataStore.edit {
-            it[PreferencesKeys.WIFI_ONLY_KEY] = !(it[PreferencesKeys.WIFI_ONLY_KEY] ?: false)
+            it[preferenceKey] = !(it[preferenceKey] ?: false)
         }
     }
 
-    private object PreferencesKeys {
-        val WIFI_ONLY_KEY = booleanPreferencesKey("download_over_wifi_only_enabled")
-    }
 }

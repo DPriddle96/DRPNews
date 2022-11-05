@@ -6,4 +6,7 @@
     <string name="download_only_over_wifi">Download Only Over WiFi</string>
     <string name="switch_on">%s ON</string>
     <string name="switch_off">%s OFF</string>
+    <string name="dark_mode_switch">Enable Dark Mode</string>
+    <string name="notFound_error">We could not find the news you are looking for!</string>
+    <string name="no_articles">No articles to display…</string>
 </resources>

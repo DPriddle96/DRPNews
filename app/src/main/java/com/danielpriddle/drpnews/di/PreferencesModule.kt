@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStoreImpl
+import com.danielpriddle.drpnews.data.preferences.PreferencesKeys
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,7 @@ object PreferencesModule {
     @Provides
     fun providePreferencesDataStore(@ApplicationContext context: Context): PreferencesDataStore {
         val dataStore = PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile("user_preferences") }
+            produceFile = { context.preferencesDataStoreFile(PreferencesKeys.PREFS_DATASTORE_NAME) }
         )
         return PreferencesDataStoreImpl(dataStore)
     }

@@ -6,15 +6,14 @@ import com.danielpriddle.drpnews.data.mappers.*
 import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.data.networking.APINewsService
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
+import com.danielpriddle.drpnews.data.preferences.PreferencesKeys
 import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.NetworkStatusChecker
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * ArticleRepository
@@ -42,7 +41,8 @@ class ArticleRepositoryImpl @Inject constructor(
             }
             logInfo("Articles retrieved from local database successfully. Emitting LocalSuccess!")
             emit(LocalSuccess(localArticles))
-            val isDownloadOverWifiOnly = dataStore.isDownloadOverWifiOnly().first()
+            val isDownloadOverWifiOnly =
+                dataStore.getPreference(PreferencesKeys.WIFI_ONLY_KEY).first()
             if (!isDownloadOverWifiOnly || networkStatusChecker.hasWifiConnection()) {
                 try {
                     val remoteArticlesResult = newsService.getTopHeadlines()

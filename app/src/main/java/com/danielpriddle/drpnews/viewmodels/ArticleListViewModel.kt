@@ -4,14 +4,15 @@ import androidx.lifecycle.*
 import com.danielpriddle.drpnews.data.models.Failure
 import com.danielpriddle.drpnews.data.models.LocalSuccess
 import com.danielpriddle.drpnews.data.models.RemoteSuccess
-import com.danielpriddle.drpnews.data.models.Success
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.Logger
-import com.danielpriddle.drpnews.utils.State
+import com.danielpriddle.drpnews.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,42 +31,38 @@ class ArticleListViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
 ) : ViewModel(), Logger {
 
-    private val _state = MutableLiveData<State>()
-    val state: LiveData<State> = _state
+    private val _state = MutableStateFlow<ViewState>(ViewState.Loading)
+    val state: StateFlow<ViewState> = _state
+
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
 
     init {
         //set the loading state on init and start getting data
-        _state.value = State.Loading
         getArticles()
     }
 
     fun getArticles() {
         viewModelScope.launch(IO) {
-            articleRepository.getArticles()
-                .onEach { result ->
-                    logDebug("ArticleViewModel call to repository result: ${result.javaClass.simpleName}")
-                    when (result) {
-                        is LocalSuccess -> {
-                            _state.postValue(State.Ready(result))
-                        }
-                        is RemoteSuccess -> {
-                            _state.postValue(State.Ready(result))
-                        }
-                        is Failure -> {
-                            _state.postValue(State.Error(result.error))
-                        }
-                        else -> {}
+            articleRepository.getArticles().collect { result ->
+                when (result) {
+                    is LocalSuccess -> {
+                        _state.value = ViewState.Ready(result)
+                        _toastMessage.emit("Got some news from your database!")
                     }
+                    is RemoteSuccess -> {
+                        _state.value = ViewState.Ready(result)
+                        _toastMessage.emit("Updated your news database with the latest news!")
+                    }
+                    is Failure -> {
+                        _state.value = ViewState.Error(result.error)
+                    }
+                    else -> {}
                 }
-                .collect()
+            }
         }
 
     }
 
-    fun searchArticles(searchString: String) {
-        viewModelScope.launch(IO) {
-            val filteredArticles = articleRepository.searchArticles("%$searchString%")
-            _state.postValue(State.Ready(Success(filteredArticles)))
-        }
-    }
+
 }

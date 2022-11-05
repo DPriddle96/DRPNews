@@ -1,8 +1,9 @@
 package com.danielpriddle.drpnews.data.preferences
 
-import kotlinx.coroutines.flow.Flow
+import androidx.datastore.preferences.core.Preferences
+import kotlinx.coroutines.flow.StateFlow
 
 interface PreferencesDataStore {
-    fun isDownloadOverWifiOnly(): Flow<Boolean>
-    suspend fun toggleDownloadOverWifiOnly()
+    fun getPreference(preferenceKey: Preferences.Key<Boolean>): StateFlow<Boolean>
+    suspend fun togglePreference(preferenceKey: Preferences.Key<Boolean>)
 }
