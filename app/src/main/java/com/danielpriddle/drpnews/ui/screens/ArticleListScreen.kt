@@ -43,8 +43,7 @@ fun ArticleListScreen(
                     LoadingIndicator()
                 }
                 is ViewState.Ready -> {
-                    val result = viewState.result
-                    val articles = result.data
+                    val articles = viewState.result.data
                     ArticleList(articles, clickListener)
                 }
                 is ViewState.Error -> {
