@@ -67,8 +67,8 @@ fun AppNavHost(navController: NavHostController) {
         composable(
             route = Route.Details.route,
         ) { backStackEntry ->
-            val article = backStackEntry.arguments?.getParcelable<Article>("article")
-            requireNotNull(article) { "Please make sure you are passing an article title" }
+            val article = backStackEntry.arguments?.getParcelable<Article>(ARTICLE_KEY)
+            requireNotNull(article) { stringResource(id = R.string.detail_route_error) }
             ArticleDetailsScreen(article)
         }
         composable(Route.Settings.route) {

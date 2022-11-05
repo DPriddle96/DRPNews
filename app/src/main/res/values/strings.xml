@@ -10,4 +10,5 @@
     <string name="notFound_error">We could not find the news you are looking for!</string>
     <string name="no_articles">No articles to display…</string>
     <string name="settings">Settings</string>
+    <string name="detail_route_error">Please make sure you are passing an article</string>
 </resources>
