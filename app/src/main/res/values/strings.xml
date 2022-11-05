@@ -9,4 +9,5 @@
     <string name="dark_mode_switch">Enable Dark Mode</string>
     <string name="notFound_error">We could not find the news you are looking for!</string>
     <string name="no_articles">No articles to display…</string>
+    <string name="settings">Settings</string>
 </resources>

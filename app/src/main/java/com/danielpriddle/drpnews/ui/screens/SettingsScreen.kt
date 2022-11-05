@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.danielpriddle.drpnews.R
@@ -18,7 +19,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
     val isDownloadOverWifiOnly = settingsViewModel.isDownloadOverWifiOnly.collectAsState().value
     val isDarkMode = settingsViewModel.isDarkMode.collectAsState().value
     Column(modifier = Modifier.padding(8.dp)) {
-        Text(text = "Settings", style = MaterialTheme.typography.h4)
+        Text(text = stringResource(id = R.string.settings), style = MaterialTheme.typography.h4)
         SettingToggle(
             checked = isDownloadOverWifiOnly,
             onCheckedChange = { settingsViewModel.toggleDownloadOverWifiOnly() },
