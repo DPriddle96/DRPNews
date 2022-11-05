@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionBar?.hide()
         setContent {
             val isDarkMode = viewModel.isDarkMode.collectAsState().value
             DRPNewsTheme(isDarkMode) {
