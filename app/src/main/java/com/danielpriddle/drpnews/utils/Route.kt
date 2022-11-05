@@ -1,10 +1,15 @@
 package com.danielpriddle.drpnews.utils
 
-import com.danielpriddle.drpnews.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class Route(val route: String, val icon: Int, val title: String) {
-    object Home : Route("home", R.drawable.ic_home, "Home")
-    object Search : Route("search", R.drawable.ic_search_white, "Search")
-    object Details : Route("detail", 0, "Details")
-    object Settings : Route("settings", R.drawable.ic_settings, "Settings")
+sealed class Route(val route: String, val icon: ImageVector, val title: String) {
+    object Home : Route("home", Icons.Default.Home, "Home")
+    object Search : Route("search", Icons.Default.Search, "Search")
+    object Details : Route("detail", Icons.Default.List, "Details")
+    object Settings : Route("settings", Icons.Default.Settings, "Settings")
 }

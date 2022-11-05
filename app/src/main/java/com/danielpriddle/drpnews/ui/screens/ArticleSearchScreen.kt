@@ -5,18 +5,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.ui.components.ArticleList
 import com.danielpriddle.drpnews.ui.theme.DRPNewsTheme
@@ -54,7 +54,7 @@ fun ArticleSearch(
             onValueChange(value)
         },
         trailingIcon = {
-            Icon(painterResource(id = R.drawable.ic_search_black),
+            Icon(imageVector = Icons.Default.Search,
                 contentDescription = "Search icon")
         }
     )

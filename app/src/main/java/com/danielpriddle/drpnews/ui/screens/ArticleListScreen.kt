@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.ui.components.ArticleList
+import com.danielpriddle.drpnews.ui.components.ErrorView
 import com.danielpriddle.drpnews.ui.components.LoadingIndicator
 import com.danielpriddle.drpnews.utils.ViewState
 import com.danielpriddle.drpnews.utils.toast
@@ -46,7 +47,9 @@ fun ArticleListScreen(
                     val articles = result.data
                     ArticleList(articles, clickListener)
                 }
-                is ViewState.Error -> {}
+                is ViewState.Error -> {
+                    ErrorView(viewState.error)
+                }
             }
 
         }

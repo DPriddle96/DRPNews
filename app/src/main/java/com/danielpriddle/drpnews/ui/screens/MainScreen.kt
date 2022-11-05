@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -92,7 +91,7 @@ fun BottomNavigationBar(navController: NavController) {
         val currentRoute = navBackStackEntry?.destination?.route
         routes.forEach { route ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = route.icon), contentDescription = route.title) },
+                icon = { Icon(imageVector = route.icon, contentDescription = route.title) },
                 label = { Text(text = route.title) },
                 selectedContentColor = MaterialTheme.colors.secondary,
                 unselectedContentColor = MaterialTheme.colors.secondary.copy(0.4f),
