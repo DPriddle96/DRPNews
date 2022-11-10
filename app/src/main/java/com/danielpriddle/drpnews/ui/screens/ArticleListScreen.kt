@@ -28,7 +28,7 @@ fun ArticleListScreen(
 
     LaunchedEffect(Unit) {
         articleListViewModel.toastMessage.collect { message ->
-            context.toast(message)
+            context.toast(context.getString(message))
         }
     }
 

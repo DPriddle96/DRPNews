@@ -1,6 +1,5 @@
 package com.danielpriddle.drpnews.viewmodels
 
-import android.content.res.Resources
 import androidx.lifecycle.*
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.Failure
@@ -36,7 +35,7 @@ class ArticleListViewModel @Inject constructor(
     private val _state = MutableStateFlow<ViewState>(ViewState.Loading)
     val state: StateFlow<ViewState> = _state
 
-    private val _toastMessage = MutableSharedFlow<String>()
+    private val _toastMessage = MutableSharedFlow<Int>()
     val toastMessage = _toastMessage.asSharedFlow()
 
     init {
@@ -50,13 +49,11 @@ class ArticleListViewModel @Inject constructor(
                 when (result) {
                     is LocalSuccess -> {
                         _state.value = ViewState.Ready(result)
-                        _toastMessage.emit(Resources.getSystem()
-                            .getString(R.string.local_success_toast))
+                        _toastMessage.emit(R.string.local_success_toast)
                     }
                     is RemoteSuccess -> {
                         _state.value = ViewState.Ready(result)
-                        _toastMessage.emit(Resources.getSystem()
-                            .getString(R.string.remote_success_toast))
+                        _toastMessage.emit(R.string.remote_success_toast)
                     }
                     is Failure -> {
                         _state.value = ViewState.Error(result.error)
