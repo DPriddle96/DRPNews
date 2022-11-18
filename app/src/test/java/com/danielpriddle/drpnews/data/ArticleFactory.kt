@@ -2,12 +2,12 @@ package com.danielpriddle.drpnews.data
 
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.data.models.Source
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object ArticleFactory {
     fun makeArticle(): String {
-        val gson = Gson()
-        return gson.toJson(Article(
+        return Json.encodeToString(Article(
             source = Source(
                 id = "1",
                 name = "Test Source"
