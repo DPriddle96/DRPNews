@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.ui.components.ArticleList
 import com.danielpriddle.drpnews.ui.components.ErrorView
@@ -18,7 +17,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ArticleListScreen(
-    articleListViewModel: ArticleListViewModel = hiltViewModel(),
+    articleListViewModel: ArticleListViewModel,
     clickListener: (Article) -> Unit = {},
 ) {
     val viewState = articleListViewModel.state.collectAsState().value

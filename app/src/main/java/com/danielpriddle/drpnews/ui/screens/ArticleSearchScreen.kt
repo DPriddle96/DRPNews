@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.danielpriddle.drpnews.data.models.Article
 import com.danielpriddle.drpnews.ui.components.ArticleList
 import com.danielpriddle.drpnews.ui.theme.DRPNewsTheme
@@ -25,7 +24,7 @@ import com.danielpriddle.drpnews.viewmodels.ArticleSearchViewModel
 @Composable
 fun ArticleSearchScreen(
     clickListener: (Article) -> Unit = {},
-    articleSearchViewModel: ArticleSearchViewModel = hiltViewModel(),
+    articleSearchViewModel: ArticleSearchViewModel,
 ) {
     val articles = articleSearchViewModel.articles.collectAsState().value
     val textFieldState =

@@ -1,30 +1,33 @@
 package com.danielpriddle.drpnews.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.danielpriddle.drpnews.data.preferences.PreferencesDataStore
 import com.danielpriddle.drpnews.data.preferences.PreferencesKeys
 import com.danielpriddle.drpnews.utils.Logger
-import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(private val preferencesDataStore: PreferencesDataStore) :
-    ViewModel(), Logger {
+@Singleton
+class SettingsViewModel @Inject constructor(
+    private val preferencesDataStore: PreferencesDataStore,
+) : Logger {
+
+    private val coroutineScope = CoroutineScope(Job() + IO)
 
     val isDownloadOverWifiOnly = preferencesDataStore.getPreference(PreferencesKeys.WIFI_ONLY_KEY)
     val isDarkMode = preferencesDataStore.getPreference(PreferencesKeys.DARK_MODE_KEY)
 
     fun toggleDownloadOverWifiOnly() {
-        viewModelScope.launch(IO) {
+        coroutineScope.launch {
             preferencesDataStore.togglePreference(PreferencesKeys.WIFI_ONLY_KEY)
         }
     }
 
     fun toggleDarkMode() {
-        viewModelScope.launch(IO) {
+        coroutineScope.launch {
             preferencesDataStore.togglePreference(PreferencesKeys.DARK_MODE_KEY)
         }
     }

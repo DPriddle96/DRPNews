@@ -9,13 +9,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.ui.components.SettingToggle
 import com.danielpriddle.drpnews.viewmodels.SettingsViewModel
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     val isDownloadOverWifiOnly = settingsViewModel.isDownloadOverWifiOnly.collectAsState().value
     val isDarkMode = settingsViewModel.isDarkMode.collectAsState().value
     Column(modifier = Modifier.padding(8.dp)) {

@@ -1,6 +1,5 @@
 package com.danielpriddle.drpnews.viewmodels
 
-import androidx.lifecycle.*
 import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.Failure
 import com.danielpriddle.drpnews.data.models.LocalSuccess
@@ -8,14 +7,14 @@ import com.danielpriddle.drpnews.data.models.RemoteSuccess
 import com.danielpriddle.drpnews.data.repository.ArticleRepository
 import com.danielpriddle.drpnews.utils.Logger
 import com.danielpriddle.drpnews.utils.ViewState
-import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * ArticleListViewModel
@@ -27,10 +26,10 @@ import javax.inject.Inject
  * @author Dan Priddle
  */
 
-@HiltViewModel
+@Singleton
 class ArticleListViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
-) : ViewModel(), Logger {
+) : Logger {
 
     private val _state = MutableStateFlow<ViewState>(ViewState.Loading)
     val state: StateFlow<ViewState> = _state
@@ -44,7 +43,7 @@ class ArticleListViewModel @Inject constructor(
     }
 
     fun getArticles() {
-        viewModelScope.launch(IO) {
+        CoroutineScope(IO).launch {
             articleRepository.getArticles().collect { result ->
                 when (result) {
                     is LocalSuccess -> {
