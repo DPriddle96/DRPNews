@@ -1,5 +1,7 @@
 package com.danielpriddle.drpnews.data.networking
 
+import kotlinx.serialization.Serializable
+
 /**
  * NewsAPIErrorResponse
  *
@@ -7,6 +9,7 @@ package com.danielpriddle.drpnews.data.networking
  * @author Dan Priddle
  */
 
+@Serializable
 data class NewsAPIErrorResponse(
     val status: String,
     val code: String,

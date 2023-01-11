@@ -1,8 +1,12 @@
 package com.danielpriddle.drpnews.data.networking
 
+import android.content.Context
+import com.danielpriddle.drpnews.R
 import com.danielpriddle.drpnews.data.models.*
 import com.danielpriddle.drpnews.utils.*
-import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +24,7 @@ import javax.inject.Singleton
 class APINewsService @Inject constructor(
     private val api: NewsAPI,
     private val networkStatusChecker: NetworkStatusChecker,
+    @ApplicationContext private val context: Context,
 ) : Logger {
     suspend fun getTopHeadlines(): DataResult<List<Article>> {
         return if (networkStatusChecker.hasInternetConnection()) {
@@ -29,7 +34,7 @@ class APINewsService @Inject constructor(
                 RemoteSuccess(response.body()!!.articles)
             } else {
                 logInfo("getTopHeadlines returned an error. Handling error now...")
-                handleAPIError(response)
+                handleAPIError(context, response)
             }
         } else {
             val message =
@@ -39,16 +44,15 @@ class APINewsService @Inject constructor(
         }
     }
 
-    private fun handleAPIError(response: Response<NewsAPIResponse>): Failure {
-        val gson = Gson()
-
+    private fun handleAPIError(context: Context, response: Response<NewsAPIResponse>): Failure {
         return if (response.code() == 404) {
-            val message = "We could not find the news you're looking for!"
+            val message = context.getString(R.string.notFound_error)
             logError(message)
             Failure(message)
         } else {
-            val errorResponse = gson.fromJson(response.errorBody()!!.string(),
-                NewsAPIErrorResponse::class.java)
+            val errorResponse =
+                Json.decodeFromString<NewsAPIErrorResponse>(response.errorBody()!!.string())
+            logInfo(errorResponse.message)
             logError("getTopHeadlines ERROR: ${errorResponse.message}")
             Failure(errorResponse.message)
         }
